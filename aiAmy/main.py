@@ -1,2 +1,2 @@
-userName = input("What's your name?")
-print(f"Nice to meet you, {userName}!")
+from loguru import logger
+logger.debug("Hello from aiAmy!")

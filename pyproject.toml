@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aiAmy"
+version = "0.0.1"
+description = "aiAmy"
+requires-python = ">=3.8"
+
+dependencies = [
+    "loguru==0.7.3"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.3.4"
+]
+
+[project.scripts]
+cli-tool = "aiAmy.main:run"
