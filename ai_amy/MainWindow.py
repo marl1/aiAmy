@@ -14,7 +14,7 @@ class MainWindow:
         self.root.wm_attributes("-transparentcolor", "white")
         
         # Convert image to PhotoImage
-        photo = PhotoImage(file="aiAmy/img/stony.png")
+        photo = PhotoImage(file="ai_amy/img/stony.png")
         
         # Create label with transparent background
         label = tk.Label(self.root, image=photo, bg='white')
@@ -32,7 +32,6 @@ class MainWindow:
         self.popup.add_command(label="Previous")
         self.popup.add_separator()
         self.popup.add_command(label="Quit", command=self.root.quit)
-        self.root.mainloop()
         
     #http://www.effbot.org/zone/tkinter-popup-menu.htm
     def display_popup_menu(self, event):
@@ -44,3 +43,9 @@ class MainWindow:
     def handle_right_click(self, event):
         # https://www.reddit.com/r/learnpython/nbnhx9/
         self.root.geometry(f'+{event.x_root}+{event.y_root}')
+    
+    def start_mainloop(self):
+        self.root.mainloop()
+
+    def set_after(self, num, func):
+        self.root.after(num, func)
