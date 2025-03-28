@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter as tk
+import time
 
 class MainWindow:
     TEXT_INPUT_WIDTH = 30
@@ -60,18 +61,50 @@ class MainWindow:
         self.root.after(num, func)
 
     def add_amy_text_input(self):
-            self.text_input = Text(self.root, height = self.TEXT_INPUT_HEIGHT, width = self.TEXT_INPUT_WIDTH, bg = "AntiqueWhite")
-            self.text_input.pack(fill=tk.BOTH, expand=True)
-            self.root.geometry(f'+{self.root.winfo_x()-self.TEXT_INPUT_WIDTH*2}+{self.root.winfo_y()}')
-            self.update_pop_up_menu()
-            self.text_input.bind('<Return>', self.send_text)
-            self.text_input.bind('<KeyRelease-Return>', self.clear_input_text)
-            self.text_input.bind('<Shift-Return>', lambda event: print(""))
+        """ Adds a separate window that follows the main window. It contains a text area for
+        the user to write in."""
+        # Create a separate top-level window for the text input
+        self.text_window = tk.Toplevel(self.root)
+        self.text_window.overrideredirect(True)  # Remove window decorations
+        self.text_window.attributes('-topmost', True)
+        self.text_window.attributes('-alpha', 0.1)
+        
+        # Position the text window relative to the main window
+        x = self.root.winfo_x() - self.TEXT_INPUT_WIDTH * 2
+        y = self.root.winfo_y()
+        
+        self.text_input = Text(self.text_window, height=1, 
+                            width=self.TEXT_INPUT_WIDTH, bg="White")
+        self.text_input.pack(fill=tk.BOTH, expand=True)
+        
+        self.update_pop_up_menu()
+        self.text_input.bind('<Return>', self.send_text)
+        self.text_input.bind('<KeyRelease-Return>', self.clear_input_text)
+        self.text_input.bind('<Shift-Return>', lambda event: print(""))
+        self.text_input.bind("<FocusIn>", self.make_opaque_amy_text_input)
+        self.text_input.bind("<FocusOut>", self.make_transparent_amy_text_input)
+        
+        # Make sure the text window follows the main window when it's moved
+        self.root.bind("<Configure>", self.update_text_window_position)
+
+    def make_opaque_amy_text_input(self, event):
+        self.text_window.attributes('-alpha', 1)
+        self.text_input.configure(height=self.TEXT_INPUT_HEIGHT)
+
+    def make_transparent_amy_text_input(self, event):
+        self.text_window.attributes('-alpha', 0.1)
+        self.text_input.configure(height=1)
+
+
+    def update_text_window_position(self, event=None):
+        if hasattr(self, 'text_window') and self.text_window.winfo_exists():
+            x = self.root.winfo_x() - self.TEXT_INPUT_WIDTH * 2
+            y = self.root.winfo_y()
+            self.text_window.geometry(f'+{x}+{y+self.root.winfo_height()}')
 
     def remove_amy_text_input(self):
-        self.text_input.destroy()
+        self.text_window.destroy()
         self.update_pop_up_menu()
-        self.root.geometry(f'+{self.root.winfo_x()+self.TEXT_INPUT_WIDTH*2}+{self.root.winfo_y()}')
 
     def send_text(self, event):
         print(f"Need to process {self.text_input.get('1.0', 'end').rstrip()}")
