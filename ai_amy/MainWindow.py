@@ -2,6 +2,7 @@ from tkinter import *
 import tkinter as tk
 
 class MainWindow:
+    TEXT_INPUT_WIDTH = 30
     def __init__(self):
         # Create the main window
         self.root = tk.Tk()
@@ -20,7 +21,8 @@ class MainWindow:
         self.label.pack(fill=tk.BOTH, expand=True)
         # https://stackoverflow.com/questions/12014210
         #On Darwin/Aqua, buttons from left to right are 1,3,2. On Darwin/X11 with recent XQuartz as the X server, they are 1,2,3; 
-        self.label.bind('<B1-Motion>', self.handle_right_click)
+        self.label.bind('<Button-1>', self.register_mouse_coordinate)
+        self.label.bind('<B1-Motion>', self.move_according_to_the_cursor)
         self.label.bind('<Button-2>', self.display_popup_menu)
         self.label.bind('<Button-3>', self.display_popup_menu)
 
@@ -40,9 +42,15 @@ class MainWindow:
         # display the popup menu
         self.popup.tk_popup(event.x_root, event.y_root, 0)
     
-    def handle_right_click(self, event):
+    def register_mouse_coordinate(self, event):
+        self.mouse_rclick_x = event.x
+        self.mouse_rclick_y = event.y
+
+    def move_according_to_the_cursor(self, event):
         # https://www.reddit.com/r/learnpython/nbnhx9/
-        self.root.geometry(f'+{event.x_root}+{event.y_root}')
+        x_position=event.x_root - self.mouse_rclick_x
+        y_position=event.y_root - self.mouse_rclick_y
+        self.root.geometry(f'+{x_position}+{y_position}')
     
     def start_mainloop(self):
         self.root.mainloop()
@@ -51,10 +59,12 @@ class MainWindow:
         self.root.after(num, func)
 
     def add_amy_text_input(self):
-            self.text_input = Text(self.root, height = 2, width = 40, bg = "AntiqueWhite")
+            self.text_input = Text(self.root, height = 2, width = self.TEXT_INPUT_WIDTH, bg = "AntiqueWhite")
             self.text_input.pack(fill=tk.BOTH, expand=True)
+            self.root.geometry(f'+{self.root.winfo_x()-self.TEXT_INPUT_WIDTH*2}+{self.root.winfo_y()}')
             self.update_pop_up_menu()
 
     def remove_amy_text_input(self):
         self.text_input.destroy()
         self.update_pop_up_menu()
+        self.root.geometry(f'+{self.root.winfo_x()+self.TEXT_INPUT_WIDTH*2}+{self.root.winfo_y()}')
