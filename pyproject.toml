@@ -1,22 +1,31 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = [
+    "setuptools>=61.0",
+    "wheel",
+    "cython<3.0",  # To solve and error in av\logging.pyx: https://github.com/SYSTRAN/faster-whisper/issues/560 (av is needed for whisper that's needed for nexaai)
+]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "aiAmy"
+name = "ai-amy"
 version = "0.0.1"
 description = "aiAmy"
 requires-python = ">=3.8"
 
 dependencies = [
-    "loguru==0.7.3"
+    "loguru==0.7.3",
+    "nexaai==0.1.1.0",
+    "Pillow==11.1.0"
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest==8.3.4",
-    "Pillow==11.1.0"
+    "pytest==8.3.4"    
 ]
 
 [project.scripts]
-cli-tool = "aiAmy.main:run"
+cli-tool = "ai_amy.main:run"
+
+[tool.pip-tools]
+index-url = "https://nexaai.github.io/nexa-sdk/whl/cpu?python_version=0.1.1.0"
+extra-index-url = "https://pypi.org/simple"
