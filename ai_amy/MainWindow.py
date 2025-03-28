@@ -3,6 +3,7 @@ import tkinter as tk
 
 class MainWindow:
     TEXT_INPUT_WIDTH = 30
+    TEXT_INPUT_HEIGHT = 3
     def __init__(self):
         # Create the main window
         self.root = tk.Tk()
@@ -59,12 +60,23 @@ class MainWindow:
         self.root.after(num, func)
 
     def add_amy_text_input(self):
-            self.text_input = Text(self.root, height = 2, width = self.TEXT_INPUT_WIDTH, bg = "AntiqueWhite")
+            self.text_input = Text(self.root, height = self.TEXT_INPUT_HEIGHT, width = self.TEXT_INPUT_WIDTH, bg = "AntiqueWhite")
             self.text_input.pack(fill=tk.BOTH, expand=True)
             self.root.geometry(f'+{self.root.winfo_x()-self.TEXT_INPUT_WIDTH*2}+{self.root.winfo_y()}')
             self.update_pop_up_menu()
+            self.text_input.bind('<Return>', self.send_text)
+            self.text_input.bind('<KeyRelease-Return>', self.clear_input_text)
+            self.text_input.bind('<Shift-Return>', lambda event: print(""))
 
     def remove_amy_text_input(self):
         self.text_input.destroy()
         self.update_pop_up_menu()
         self.root.geometry(f'+{self.root.winfo_x()+self.TEXT_INPUT_WIDTH*2}+{self.root.winfo_y()}')
+
+    def send_text(self, event):
+        print(f"Need to process {self.text_input.get('1.0', 'end').rstrip()}")
+        self.text_input.delete('1.0', END) # Clear the text but \n will be added just after
+    
+    def clear_input_text(self, event):
+        if(self.text_input.get('1.0', 'end').strip()==""):
+            self.text_input.delete('1.0', END)
