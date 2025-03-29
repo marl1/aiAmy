@@ -1,10 +1,13 @@
 from tkinter import *
 import tkinter as tk
+from tkinter import scrolledtext 
 import time
 
 class MainWindow:
     TEXT_INPUT_WIDTH = 30
     TEXT_INPUT_HEIGHT = 3
+    TEXT_OUTPUT_WIDTH = 30
+    TEXT_OUTPUT_HEIGHT = 5
     def __init__(self):
         # Create the main window
         self.root = tk.Tk()
@@ -12,7 +15,9 @@ class MainWindow:
         self.root.overrideredirect(True)  # Remove window decorations
         self.root.wm_attributes("-transparentcolor", "white")
         self.add_amy_picture()
+        self.add_amy_text_output()
         self.add_amy_text_input()
+        self.root.bind("<Configure>", self.update_following_windows_position)
         self.update_pop_up_menu()
 
     def add_amy_picture(self):
@@ -60,20 +65,56 @@ class MainWindow:
     def set_after(self, num, func):
         self.root.after(num, func)
 
+    def add_amy_text_output(self):
+        """ Adds a separate window that follows the main window. It contains the
+        text the character will say."""
+        # Create a separate top-level window for the text input
+        self.text_output_window = tk.Toplevel(self.root)
+        self.text_output_window.overrideredirect(True)  # Remove window decorations
+        self.text_output_window.attributes('-topmost', True)
+       # self.text_output_window.attributes('-alpha', 0.1)
+        
+        # Position the text window relative to the main window
+        x = self.root.winfo_x() - self.TEXT_INPUT_WIDTH * 2
+        y = self.root.winfo_y()
+        self.text_output = scrolledtext.ScrolledText(
+                                    self.text_output_window,  
+                                    wrap = tk.WORD,
+                                    width = self.TEXT_OUTPUT_WIDTH,
+                                    height = self.TEXT_OUTPUT_HEIGHT,
+                                    font = ("Arial", 10),
+                                    highlightthickness = 0,
+                                    borderwidth=0)
+        self.text_output.pack(fill=tk.BOTH, expand=True)
+        self.text_output.insert("1.0", "Hello from AiAmy !!!\nI'm here to help you.")
+        self.text_output.configure(state ='disabled') # Disallow the user writing in it
+
+    def update_following_windows_position(self, event=None):
+        """ To make the text input and out windows follow the character. """
+        if hasattr(self, 'text_input_window') and self.text_input_window.winfo_exists():
+            x = self.root.winfo_x() - self.TEXT_INPUT_WIDTH * 2
+            y = self.root.winfo_y()
+            self.text_input_window.geometry(f'+{x}+{y+self.root.winfo_height()}')
+        if hasattr(self, 'text_output_window') and self.text_output_window.winfo_exists():
+            x = self.root.winfo_x() - self.TEXT_INPUT_WIDTH * 2
+            y = self.root.winfo_y()
+            self.text_output_window.geometry(f'+{x}+{y-self.text_output_window.winfo_height()}')
+
+###### all about inputting text #######
     def add_amy_text_input(self):
         """ Adds a separate window that follows the main window. It contains a text area for
         the user to write in."""
         # Create a separate top-level window for the text input
-        self.text_window = tk.Toplevel(self.root)
-        self.text_window.overrideredirect(True)  # Remove window decorations
-        self.text_window.attributes('-topmost', True)
-        self.text_window.attributes('-alpha', 0.1)
+        self.text_input_window = tk.Toplevel(self.root)
+        self.text_input_window.overrideredirect(True)  # Remove window decorations
+        self.text_input_window.attributes('-topmost', True)
+        self.text_input_window.attributes('-alpha', 0.1)
         
         # Position the text window relative to the main window
         x = self.root.winfo_x() - self.TEXT_INPUT_WIDTH * 2
         y = self.root.winfo_y()
         
-        self.text_input = Text(self.text_window, height=1, 
+        self.text_input = Text(self.text_input_window, height=1, 
                             width=self.TEXT_INPUT_WIDTH, bg="White")
         self.text_input.pack(fill=tk.BOTH, expand=True)
         
@@ -84,26 +125,17 @@ class MainWindow:
         self.text_input.bind("<FocusIn>", self.make_opaque_amy_text_input)
         self.text_input.bind("<FocusOut>", self.make_transparent_amy_text_input)
         
-        # Make sure the text window follows the main window when it's moved
-        self.root.bind("<Configure>", self.update_text_window_position)
 
     def make_opaque_amy_text_input(self, event):
-        self.text_window.attributes('-alpha', 1)
+        self.text_input_window.attributes('-alpha', 1)
         self.text_input.configure(height=self.TEXT_INPUT_HEIGHT)
 
     def make_transparent_amy_text_input(self, event):
-        self.text_window.attributes('-alpha', 0.1)
+        self.text_input_window.attributes('-alpha', 0.1)
         self.text_input.configure(height=1)
 
-
-    def update_text_window_position(self, event=None):
-        if hasattr(self, 'text_window') and self.text_window.winfo_exists():
-            x = self.root.winfo_x() - self.TEXT_INPUT_WIDTH * 2
-            y = self.root.winfo_y()
-            self.text_window.geometry(f'+{x}+{y+self.root.winfo_height()}')
-
     def remove_amy_text_input(self):
-        self.text_window.destroy()
+        self.text_input_window.destroy()
         self.update_pop_up_menu()
 
     def send_text(self, event):
