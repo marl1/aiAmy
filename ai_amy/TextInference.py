@@ -15,7 +15,7 @@ class TextInference:
 
     def getAnswerTo(self, text):
         answer = self.inference.create_chat_completion(
-            messages=[{"role": "user", "content": "write a long 1000 word story about a detective"}]
+            messages=[{"role": "user", "content": text}]
         )
         print("la réponse=",answer)
         return answer

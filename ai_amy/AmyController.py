@@ -1,11 +1,18 @@
+from pydantic import ValidationError
 from MainWindow import MainWindow
 from TextInference import *
 from concurrent import futures
+from model.ChatCompletion import *
+import ast
+from loguru import logger
 
 thread_pool_executor = futures.ThreadPoolExecutor(max_workers=1)
 
 class AmyController:
     def __init__(self):
+        logger.add("AiAmy_{time}.log", level="INFO", rotation="50 MB")
+        logger.info(f"Launching AiAmy...")
+
         # Launch the LLM
         self.text_inference = TextInference()
         # Create the Windows for the character
@@ -18,4 +25,8 @@ class AmyController:
 
     def fetch_answer(self, text):
         answer = self.text_inference.getAnswerTo(text)
-        self.main_window.text_output.set_content(answer)
+        try:
+            chat = ChatCompletion.model_validate(answer)
+            self.main_window.text_output.set_content(chat.choices[0].message.content)
+        except ValidationError as e:
+            logger.error(f"Couldn't handle the following answer from the LLM: {answer}")
