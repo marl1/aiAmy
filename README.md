@@ -1,6 +1,6 @@
 # aiAmy
 
-A little desktop AI pet that lives on the desktop. Still very WIP.
+A little desktop AI pet that lives on the desktop. Still very WIP, no release yet!
 
 ![Amy the desktop pet saying "Hello from Amy!" and answering "I'm fine" to "how are you".](amy_for_readme.gif)
 
@@ -27,32 +27,3 @@ pip install -e .[dev]
 #Launch the program.
 python aiAmy/main.py
 ```
-
-model_path = "llama2"
-inference = NexaTextInference(
-    model_path=model_path,
-    local_path=None,
-    stop_words=[],
-    temperature=0.7,
-    max_new_tokens=512,
-    top_k=50,
-    top_p=0.9,
-    profiling=True
-)
-
-# run() method
-inference.run()
-
-# run_streamlit() method
-inference.run_streamlit(model_path)
-
-# create_embedding(input) method
-inference.create_embedding("Hello, world!")
-
-# create_chat_completion(messages)
-inference.create_chat_completion(
-    messages=[{"role": "user", "content": "write a long 1000 word story about a detective"}]
-)
-
-# create_completion(prompt)
-inference.create_completion("Q: Name the planets in the solar system? A:")
