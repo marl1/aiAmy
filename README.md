@@ -1,14 +1,14 @@
 # aiAmy
 
-A little desktop AI pet that lives on the desktop.
+A little desktop AI pet that lives on the desktop. Still very WIP.
 
 ![Amy the desktop pet saying "Hello from Amy!" and answering "I'm fine" to "how are you".](amy_for_readme.gif)
 
 
 ## Install for devs
 Requirements :
--Python 3.11.9 (or above?)
--moondream2-text-model-f16.gguf and moondream2-mmproj-f16.gguf from https://huggingface.co/moondream/moondream2-gguf/tree/main (put it in ai_amy/ai_models directory)
+- Python 3.11.9 (or above?)
+- Download moondream2-text-model-f16.gguf and moondream2-mmproj-f16.gguf from https://huggingface.co/moondream/moondream2-gguf/tree/main (put it in ai_amy/ai_models directory)
 
 Commands :
 ```
