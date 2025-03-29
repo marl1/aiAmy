@@ -14,7 +14,7 @@ class AmyController:
         logger.info(f"Launching AiAmy...")
 
         # Launch the LLM
-        self.text_inference = TextAndVisionInference()
+        self.text_and_vision_inference = TextAndVisionInference()
         # Create the Windows for the character
         self.main_window=MainWindow(self)
         self.main_window.start_mainloop()
@@ -24,7 +24,7 @@ class AmyController:
         thread_pool_executor.submit(self.fetch_answer, text)
 
     def fetch_answer(self, text):
-        answer = self.text_inference.getAnswerTo(text)
+        answer = self.text_and_vision_inference.getAnswerToText(text)
         try:
             chat = ChatCompletion.model_validate(answer)
             self.main_window.text_output.set_content(chat.choices[0].message.content)

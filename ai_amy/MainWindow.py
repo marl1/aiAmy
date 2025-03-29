@@ -72,6 +72,7 @@ class MainWindow:
         text the character will say."""
         # Create a separate top-level window for the text input
         self.text_output_window = tk.Toplevel(self.root)
+        self.text_output_window.attributes('-alpha', 0.7)
         self.text_output_window.overrideredirect(True)  # Remove window decorations
         self.text_output_window.attributes('-topmost', True)
 
