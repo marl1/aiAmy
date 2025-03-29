@@ -14,9 +14,9 @@ requires-python = ">=3.8"
 
 dependencies = [
     "loguru==0.7.3",
-    "nexaai==0.1.1.0",
     "Pillow==11.1.0",
-    "Pydantic==2.11.1"
+    "Pydantic==2.11.1",
+    "llama-cpp-python"
 ]
 
 [project.optional-dependencies]
@@ -28,5 +28,7 @@ dev = [
 cli-tool = "ai_amy.main:run"
 
 [tool.pip-tools]
-index-url = "https://nexaai.github.io/nexa-sdk/whl/cpu?python_version=0.1.1.0"
-extra-index-url = "https://pypi.org/simple"
+extra-index-url = [
+    "https://pypi.org/simple",
+    "https://abetlen.github.io/llama-cpp-python/whl/cpu"
+]

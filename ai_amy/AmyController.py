@@ -1,6 +1,6 @@
 from pydantic import ValidationError
 from MainWindow import MainWindow
-from TextInference import *
+from ai_amy.TextAndVisionInference import *
 from concurrent import futures
 from model.ChatCompletion import *
 import ast
@@ -10,7 +10,7 @@ thread_pool_executor = futures.ThreadPoolExecutor(max_workers=1)
 
 class AmyController:
     def __init__(self):
-        logger.add("AiAmy_{time}.log", level="INFO", rotation="50 MB")
+        logger.add("AiAmy.log", level="INFO", rotation="50 MB")
         logger.info(f"Launching AiAmy...")
 
         # Launch the LLM
