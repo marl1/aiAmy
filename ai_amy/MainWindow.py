@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter as tk
-from tkinter import scrolledtext 
+from tkinter import scrolledtext
+from ScrollableReadOnlyText import *
 import time
 
 class MainWindow:
@@ -72,22 +73,10 @@ class MainWindow:
         self.text_output_window = tk.Toplevel(self.root)
         self.text_output_window.overrideredirect(True)  # Remove window decorations
         self.text_output_window.attributes('-topmost', True)
-       # self.text_output_window.attributes('-alpha', 0.1)
-        
-        # Position the text window relative to the main window
-        x = self.root.winfo_x() - self.TEXT_INPUT_WIDTH * 2
-        y = self.root.winfo_y()
-        self.text_output = scrolledtext.ScrolledText(
-                                    self.text_output_window,  
-                                    wrap = tk.WORD,
-                                    width = self.TEXT_OUTPUT_WIDTH,
-                                    height = self.TEXT_OUTPUT_HEIGHT,
-                                    font = ("Arial", 10),
-                                    highlightthickness = 0,
-                                    borderwidth=0)
-        self.text_output.pack(fill=tk.BOTH, expand=True)
-        self.text_output.insert("1.0", "Hello from AiAmy !!!\nI'm here to help you.")
-        self.text_output.configure(state ='disabled') # Disallow the user writing in it
+
+        self.text_output = ScrollableReadOnlyText(self.text_output_window, width=30, height=4)
+        self.text_output.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
+        self.text_output.set_content("Hello from Amy !")
 
     def update_following_windows_position(self, event=None):
         """ To make the text input and out windows follow the character. """
@@ -139,6 +128,7 @@ class MainWindow:
         self.update_pop_up_menu()
 
     def send_text(self, event):
+        self.text_output.set_content(self.text_input.get('1.0', 'end'))
         print(f"Need to process {self.text_input.get('1.0', 'end').rstrip()}")
         self.text_input.delete('1.0', END) # Clear the text but \n will be added just after
     
