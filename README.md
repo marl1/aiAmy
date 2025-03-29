@@ -1,5 +1,9 @@
 # aiAmy
 
+A little desktop AI pet that lives on the desktop.
+
+![alt text](amy_for_readme.png)
+
 
 ## Install for devs
 Requirements :
