@@ -2,7 +2,7 @@
 
 A little desktop AI pet that lives on the desktop.
 
-![alt text](amy_for_readme.png)
+![Amy the desktop pet saying "Hello from Amy!" and answering "I'm fine" to "how are you".](amy_for_readme.gif)
 
 
 ## Install for devs
