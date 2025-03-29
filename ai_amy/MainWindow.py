@@ -2,14 +2,15 @@ from tkinter import *
 import tkinter as tk
 from tkinter import scrolledtext
 from ScrollableReadOnlyText import *
-import time
+from AmyController import *
 
 class MainWindow:
     TEXT_INPUT_WIDTH = 30
     TEXT_INPUT_HEIGHT = 3
     TEXT_OUTPUT_WIDTH = 30
     TEXT_OUTPUT_HEIGHT = 5
-    def __init__(self):
+    def __init__(self, amy_controller):
+        self.amy_controller = amy_controller
         # Create the main window
         self.root = tk.Tk()
         self.root.attributes('-topmost', True)  # Keep window on top
@@ -128,8 +129,7 @@ class MainWindow:
         self.update_pop_up_menu()
 
     def send_text(self, event):
-        self.text_output.set_content(self.text_input.get('1.0', 'end'))
-        print(f"Need to process {self.text_input.get('1.0', 'end').rstrip()}")
+        self.amy_controller.send_text(self.text_input.get('1.0', 'end').rstrip())
         self.text_input.delete('1.0', END) # Clear the text but \n will be added just after
     
     def clear_input_text(self, event):
