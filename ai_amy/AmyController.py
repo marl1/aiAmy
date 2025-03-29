@@ -14,7 +14,7 @@ class AmyController:
         logger.info(f"Launching AiAmy...")
 
         # Launch the LLM
-        self.text_inference = TextInference()
+        self.text_inference = TextAndVisionInference()
         # Create the Windows for the character
         self.main_window=MainWindow(self)
         self.main_window.start_mainloop()
