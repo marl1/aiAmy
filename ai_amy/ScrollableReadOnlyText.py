@@ -15,7 +15,9 @@ class ScrollableReadOnlyText:
             relief="flat",
             borderwidth=0,
             highlightthickness = 0,
-            cursor="arrow"  # Arrow cursor instead of I-beam
+            cursor="arrow",
+            padx=3,
+            pady=3
         )             
         
         # Create a Scrollbar that will always exist but be visible only when needed
@@ -29,12 +31,8 @@ class ScrollableReadOnlyText:
         self.scrollbar.grid(row=0, column=1, sticky="ns")
         
         # Initially hide scrollbar (without removing it from layout)
-        self.scrollbar.grid_remove()
-        
-        # Bind to relevant events
+        self.scrollbar.grid_remove()        
         self.text.bind("<<Modified>>", self.on_content_modified)
-        
-        # Make the text read-only after insertion
         self.set_read_only()
     
     def update_scrollbar(self, first, last):
@@ -52,10 +50,11 @@ class ScrollableReadOnlyText:
                 self.scrollbar.grid_remove()
     
     def on_content_modified(self, event=None):
-        # Reset the modified flag (important, otherwise the event won't fire again)
+        if(len(self.text.get('1.0', 'end'))>100):
+            self.text.configure(height=5)
+        else:
+            self.text.configure(height=2)
         self.text.edit_modified(False)
-        
-        # Check scrollbar visibility
         self.check_scrollbar_needed()
     
     def check_scrollbar_needed(self):

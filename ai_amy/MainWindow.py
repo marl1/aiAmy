@@ -75,7 +75,7 @@ class MainWindow:
         self.text_output_window.attributes('-topmost', True)
 
         self.text_output = ScrollableReadOnlyText(self.text_output_window, width=30, height=4)
-        self.text_output.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
+        self.text_output.pack(fill=tk.BOTH, expand=True, padx=0, pady=0)
         self.text_output.set_content("Hello from Amy !")
 
     def update_following_windows_position(self, event=None):
