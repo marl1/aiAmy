@@ -16,6 +16,9 @@ def get_config_personality():
 def get_config_knowledge():
     return config['CHARACTER']['Knowledge']
 
+def get_config_appearance():
+    return config['CHARACTER']['Appearance']
+
 def get_config_log_chat():
     return config['APPLICATION']['RecordAllChats']
 
