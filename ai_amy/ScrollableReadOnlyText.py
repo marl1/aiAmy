@@ -50,7 +50,7 @@ class ScrollableReadOnlyText:
                 self.scrollbar.grid_remove()
     
     def on_content_modified(self, event=None):
-        if(len(self.text.get('1.0', 'end'))>100):
+        if(len(self.text.get('1.0', 'end'))>80):
             self.text.configure(height=5)
         else:
             self.text.configure(height=2)

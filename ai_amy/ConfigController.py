@@ -2,9 +2,6 @@ import configparser
 import random
 from loguru import logger
 
-
-
-
 config = configparser.ConfigParser()
 try:
     config.read('config.ini')
@@ -15,6 +12,12 @@ except:
 
 def get_config_personality():
     return config['CHARACTER']['Personnality']
+
+def get_config_knowledge():
+    return config['CHARACTER']['Knowledge']
+
+def get_config_log_chat():
+    return config['APPLICATION']['RecordAllChats']
 
 def get_config_random_mood():
     moodsFromConfigFile = config['CHARACTER']['Moods']
