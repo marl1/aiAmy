@@ -1,31 +1,33 @@
-import configparser
+import yaml
 import random
 from loguru import logger
 
-config = configparser.ConfigParser()
+
+config =  []
 try:
-    config.read('config.ini')
+    with open("config.yml", "r") as yamlfile:
+        config = yaml.load(yamlfile, Loader=yaml.FullLoader)
 except:
-    logger.error(f"Couldn't read config.ini file. Make sure the file is at the root level and readable.")
+    config.error(f"Couldn't read config.yml file. Make sure the file is at the root level and readable.")
+print(config)
 
     
 
 def get_config_personality():
-    return config['CHARACTER']['Personnality']
+    return config['character']['personnality']
 
 def get_config_knowledge():
-    return config['CHARACTER']['Knowledge']
+    return config['character']['knowledge']
 
 def get_config_appearance():
-    return config['CHARACTER']['Appearance']
+    return config['character']['appearance']
 
 def get_config_log_chat():
-    return config['APPLICATION']['RecordAllChats']
+    return config['application']['record_all_chats']
 
-def get_config_random_mood():
-    moodsFromConfigFile = config['CHARACTER']['Moods']
-    moodList = moodsFromConfigFile.splitlines()
-    #"generate a list that consists of x for every element in strings if x actually contains something."
-    #https://stackoverflow.com/questions/3845423
-    moodWithoutBlank = [mood for mood in moodList if mood]
-    return random.choice(moodWithoutBlank)
+def get_config_random_impulse():
+    impulses_from_config_file = config['character']['impulses']
+    ponderated_impulses = []
+    for impulse in config['character']['impulses']:
+        ponderated_impulses.extend([impulse] * impulse['weight'])
+    return random.choice(ponderated_impulses)['description']
