@@ -1,19 +1,22 @@
-import base64
-from llama_cpp import Llama
-from llama_cpp.llama_chat_format import Llava15ChatHandler
+import threading
 from ConfigController import *
 from model.ChatCompletion import Message
 from typing import List
 
 
 class Memory:
-    messages:List[Message] = []
-    
-    def __init__(self):
-        pass
+    """ Singleton class that hold the list of previous messages."""
+    # Shared class variable
+    _messages: List[Message] = []
+    # Class-level lock
+    _lock = threading.Lock()
 
-    def saveMessage(self, message:Message):
-        self.messages.append(message)
+    @classmethod
+    def saveMessage(cls, message: Message):
+        with cls._lock:
+            cls._messages.append(message)
 
-    def getMessages(self) -> List[Message]:
-        return self.messages
+    @classmethod
+    def getMessages(cls) -> List[Message]:
+        with cls._lock:
+            return list(cls._messages) # Return a copy

@@ -5,7 +5,7 @@ from concurrent import futures
 from model.ChatCompletion import *
 import ast
 from loguru import logger
-from Memory import *
+from ai_amy.Memory import *
 from ConfigController import *
 
 
@@ -18,8 +18,6 @@ class AmyController:
         logger.info(f"Launching AiAmy...")
         # Launch the LLM
         self.text_inference = TextInference()
-        # Create the short term memory that will hold the previous dialog.
-        self.memory = Memory()
         # Create the Windows for the character
         self.main_window=MainWindow(self)
         self.main_window.start_mainloop()
@@ -33,13 +31,12 @@ class AmyController:
         if (self.IS_TEXT_INFERING):
             logger.error(f"Got {text} to infer but we were already infering.")
             return # We are alrealdy generating text so we exit.
-        print("0")
-        answer = self.text_inference.getAnswerToText(text, self.memory.getMessages())
+        answer = self.text_inference.getAnswerToText(text)
         if(get_config_log_chat()):
             logger.info(f"USER: {text}")
         try:
             chat:ChatCompletion = ChatCompletion.model_validate(answer)
-            self.memory.saveMessage(chat.choices[-1].message)
+            Memory.saveMessage(Message(role="assistant", content=chat.choices[0].message.content))
             if(get_config_log_chat()):
                 logger.info(f"AMY: {chat.choices[0].message.content}")
             self.main_window.text_output.set_content(chat.choices[0].message.content)

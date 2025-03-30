@@ -2,6 +2,7 @@ import base64
 from llama_cpp import Llama
 from sklearn import get_config
 from ConfigController import *
+from ai_amy.Memory import Memory
 from model.ChatCompletion import Message
 from typing import List
 import json
@@ -16,11 +17,10 @@ class TextInference:
         n_ctx=4096,
         )
 
-    def getAnswerToText(self, text, previousMessages:List[Message]):
+    def getAnswerToText(self, text):
         print("here received", text)
-        print(previousMessages)
-        previousMessages.append(Message(role="user", content=text))
-        messages_to_send = previousMessages.copy()        
+        Memory.saveMessage(Message(role="user", content=text))
+        messages_to_send = Memory.getMessages()
         system_content = get_config_personality() + " " + get_config_appearance() + " " + get_config_random_impulse() + " "
         system_content = system_content + "At the end of your sentence write your current mood in brackets choosing only from [neutral], [curious], [happy], [sad], [angry], [surprised], [lovey]."
         messages_to_send.insert(0, Message(role="system", content=system_content))
@@ -34,4 +34,6 @@ class TextInference:
             max_tokens=512
         )
         print("answer", answer)
+        print("all messages before exiting the function", Memory.getMessages())
+
         return answer

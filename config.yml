@@ -19,6 +19,8 @@ character:
      weight: 5
 
 animations:
+  - file: "stony.png"
+    default: True
   - file: "stonyMove.gif"
     play_after_idle_time_min: 30
     play_after_idle_time_max:
