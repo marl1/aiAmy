@@ -1,6 +1,6 @@
 from pydantic import ValidationError
 from MainWindow import MainWindow
-from ai_amy.TextAndVisionInference import *
+from ai_amy.TextInference import *
 from concurrent import futures
 from model.ChatCompletion import *
 import ast
@@ -9,12 +9,12 @@ from loguru import logger
 thread_pool_executor = futures.ThreadPoolExecutor(max_workers=1)
 
 class AmyController:
+    IS_TEXT_INFERING=False
     def __init__(self):
         logger.add("AiAmy.log", level="INFO", rotation="50 MB")
         logger.info(f"Launching AiAmy...")
-
         # Launch the LLM
-        self.text_and_vision_inference = TextAndVisionInference()
+        self.text_inference = TextInference()
         # Create the Windows for the character
         self.main_window=MainWindow(self)
         self.main_window.start_mainloop()
@@ -24,9 +24,16 @@ class AmyController:
         thread_pool_executor.submit(self.fetch_answer, text)
 
     def fetch_answer(self, text):
-        answer = self.text_and_vision_inference.getAnswerToText(text)
+        """ Interrogate the text model. """
+        if (self.IS_TEXT_INFERING):
+            logger.error(f"Got {text} to infer but we were already infering.")
+            return # We are alrealdy generating text so we exit.
+        answer = self.text_inference.getAnswerToText(text)
         try:
             chat = ChatCompletion.model_validate(answer)
             self.main_window.text_output.set_content(chat.choices[0].message.content)
+            # If the answer is long the answer window may gets higher so we needs to update it.
+            self.main_window.update_following_windows_position()
         except ValidationError as e:
             logger.error(f"Couldn't handle the following answer from the LLM: {answer}")
+        self.IS_TEXT_INFERING = False

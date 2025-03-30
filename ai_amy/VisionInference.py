@@ -1,33 +1,18 @@
 import base64
 from llama_cpp import Llama
-from llama_cpp.llama_chat_format import MoondreamChatHandler
+from llama_cpp.llama_chat_format import Llava15ChatHandler
+from ConfigController import *
 
 
-class TextAndVisionInference:
+class VisionInference:
     def __init__(self):
-        chat_handler = MoondreamChatHandler(clip_model_path="./ai_amy/ai_models/moondream2-mmproj-f16.gguf")
+        chat_handler = Llava15ChatHandler(clip_model_path="./ai_amy/ai_models/moondream2-mmproj-f16.gguf")
         self.llm = Llama(
         model_path="./ai_amy/ai_models/moondream2-text-model-f16.gguf",
         chat_handler=chat_handler,
             verbose=True,
         n_ctx=2048, # n_ctx should be increased to accommodate the image embedding
         )
-
-    def getAnswerToText(self, text):
-        print("here received", text)
-        answer = self.llm.create_chat_completion(
-            messages = [
-                {"role": "system", "content": "You are Amy, a cute desktop pet living on the desktop of the user."},
-                {
-                    "role": "user",
-                    "content": text
-                }
-            ],
-            temperature=0.01,
-            max_tokens=512
-        )
-        print("answer", answer)
-        return answer
 
     def getAnswerToImage(self, text):
         print("here received", text)

@@ -8,6 +8,7 @@ A little desktop AI pet that lives on the desktop. Still very WIP, no release ye
 ## Install for devs
 Requirements :
 - Python 3.11.9 (or above?)
+- Download gemma-3-4b-it-Q4_K_M.gguf from https://huggingface.co/unsloth/gemma-3-4b-it-GGUF/tree/main
 - Download moondream2-text-model-f16.gguf and moondream2-mmproj-f16.gguf from https://huggingface.co/moondream/moondream2-gguf/tree/main (put it in ai_amy/ai_models directory)
 
 Commands :
