@@ -3,6 +3,8 @@ import tkinter as tk
 from tkinter import scrolledtext
 from ScrollableReadOnlyText import *
 from AmyController import *
+from itertools import count
+from ImageLabel import *
 
 class MainWindow:
     TEXT_INPUT_WIDTH = 30
@@ -21,12 +23,12 @@ class MainWindow:
         self.add_amy_text_input()
         self.root.bind("<Configure>", self.update_following_windows_position)
         self.update_pop_up_menu()
+        self.root.geometry('200x100')
 
     def add_amy_picture(self):
         """ Create the picture of the virtual friend and the right click interaction. """
-        photo = PhotoImage(file="ai_amy/img/stony.png")
-        self.label = tk.Label(self.root, image=photo, bg='white')
-        self.label.image = photo  # Keep a reference to prevent garbage collection
+        self.label = ImageLabel(self.root,  bg='white')
+        self.label.load("ai_amy/img/stonyMove.gif")
         self.label.pack(fill=tk.BOTH, expand=True)
         # https://stackoverflow.com/questions/12014210
         #On Darwin/Aqua, buttons from left to right are 1,3,2. On Darwin/X11 with recent XQuartz as the X server, they are 1,2,3; 
@@ -85,11 +87,11 @@ class MainWindow:
         if hasattr(self, 'text_input_window') and self.text_input_window.winfo_exists():
             x = self.root.winfo_x() - self.TEXT_INPUT_WIDTH * 2
             y = self.root.winfo_y()
-            self.text_input_window.geometry(f'+{x}+{y+self.root.winfo_height()}')
+            self.text_input_window.geometry(f'+{x+45}+{y+self.root.winfo_height()}')
         if hasattr(self, 'text_output_window') and self.text_output_window.winfo_exists():
             x = self.root.winfo_x() - self.TEXT_INPUT_WIDTH * 2
             y = self.root.winfo_y()
-            self.text_output_window.geometry(f'+{x}+{y-self.text_output_window.winfo_height()}')
+            self.text_output_window.geometry(f'+{x+58}+{y-self.text_output_window.winfo_height()+40}')
 
 ###### all about inputting text #######
     def add_amy_text_input(self):
