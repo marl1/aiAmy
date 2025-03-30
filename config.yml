@@ -19,18 +19,17 @@ character:
      weight: 5
 
 animations:
-  - file: "idle1.gif"
+  - file: "stonyMove.gif"
     play_after_idle_time_min: 30
     play_after_idle_time_max:
     play_on_mood:
     chance_mutiplier: 2
-  - file: "angryJumping.gif"
-    play_after_idle_time_min: 30
-    play_after_idle_time_max:
-    play_on_mood: "angry"
-    chance_mutiplier: 1
-  - file: "angryBoiling.gif"
+    loop_min: 1
+    loop_max: 1
+  - file: "stonyBoiling.gif"
     play_after_idle_time_min: 30
     play_after_idle_time_max:
     play_on_mood: "angry"
     chance_mutiplier: 2
+    loop_min: 4
+    loop_max: 8

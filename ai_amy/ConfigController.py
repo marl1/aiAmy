@@ -26,7 +26,6 @@ def get_config_log_chat():
     return config['application']['record_all_chats']
 
 def get_config_random_impulse():
-    impulses_from_config_file = config['character']['impulses']
     ponderated_impulses = []
     for impulse in config['character']['impulses']:
         ponderated_impulses.extend([impulse] * impulse['weight'])
