@@ -24,15 +24,12 @@ except:
 
 
 def get_config_personality():
-    print("pers", character_config['personnality'])
     return character_config['personnality']
 
 def get_config_knowledge():
-    print("kn", character_config['knowledge'])
     return character_config['knowledge']
 
 def get_config_appearance():
-    print("app", character_config['appearance'])
     return character_config['appearance']
 
 def get_config_log_chat():
