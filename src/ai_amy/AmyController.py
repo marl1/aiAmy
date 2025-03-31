@@ -1,10 +1,10 @@
+import TextInference
+from Memory import Memory
 from pydantic import ValidationError
 from MainWindow import MainWindow
-from ai_amy.TextInference import *
 from concurrent import futures
 from model.ChatCompletion import *
 from loguru import logger
-from ai_amy.Memory import *
 from ConfigController import *
 
 
@@ -16,9 +16,10 @@ class AmyController:
         logger.add("AiAmy.log", level="INFO", rotation="50 MB")
         logger.info(f"Launching AiAmy...")
         # Launch the LLM
-        self.text_inference = TextInference()
+        self.text_inference = TextInference.TextInference()
         # Create the Windows for the character
         self.main_window=MainWindow(self)
+        self.main_window.root.after(0, lambda: self.main_window.amy_animation.changePicture("stony.png"))
         self.main_window.start_mainloop()
 
     def send_text(self, text):
@@ -39,7 +40,7 @@ class AmyController:
             if(get_config_log_chat()):
                 logger.info(f"AMY: {chat.choices[0].message.content}")
             self.main_window.root.after(0, lambda: self.main_window.text_output.set_content(chat.choices[0].message.content))
-            self.main_window.root.after(0, lambda: self.main_window.amy_animation.changePicture("ai_amy/img/stonyBoiling.gif"))
+            self.main_window.root.after(0, lambda: self.main_window.amy_animation.changePicture("stonyMove.gif"))
             # If the answer is long the answer window may gets higher so we needs to update it.
             self.main_window.update_following_windows_position()
         except ValidationError as e:

@@ -29,7 +29,6 @@ class MainWindow:
     def add_amy_picture(self):
         """ Create the picture of the virtual friend and the right click interaction. """
         self.label = ImageLabel(self.root,  bg='white')
-        self.label.load("ai_amy/img/stonyMove.gif")
         self.label.pack(fill=tk.BOTH, expand=True)
         # https://stackoverflow.com/questions/12014210
         #On Darwin/Aqua, buttons from left to right are 1,3,2. On Darwin/X11 with recent XQuartz as the X server, they are 1,2,3; 

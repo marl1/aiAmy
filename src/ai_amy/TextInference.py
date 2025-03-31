@@ -2,17 +2,19 @@ import base64
 from llama_cpp import Llama
 from sklearn import get_config
 from ConfigController import *
-from ai_amy.Memory import Memory
+from Memory import Memory
 from model.ChatCompletion import Message
 from typing import List
 import json
+import AmyUtils
 
 
 
 class TextInference:
     def __init__(self):
+        print("AmyUtils.get_base_path()", AmyUtils.get_base_path())
         self.llm = Llama(
-        model_path="./ai_amy/ai_models/gemma-3-4b-it-Q4_K_M.gguf",
+        model_path=AmyUtils.get_base_path() + "/ai_models/gemma-3-4b-it-Q4_K_M.gguf",
         verbose=True,
         n_ctx=4096,
         )

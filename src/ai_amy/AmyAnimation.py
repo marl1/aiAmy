@@ -1,5 +1,6 @@
 import threading
 import ImageLabel
+import AmyUtils
 
 #https://medium.com/analytics-vidhya/how-to-create-a-thread-safe-singleton-class-in-python-822e1170a7f6
 #https://stackoverflow.com/questions/50566934
@@ -22,4 +23,5 @@ class AmyAnimation:
     def changePicture(self, new_picture):
             """ Thread safe. Change the picture of Amy. """
             with self._lock:
-                self._imageLabel.load(new_picture)
+                self._imageLabel.unload()
+                self._imageLabel.load(AmyUtils.get_base_path() + "/img/" + new_picture)
