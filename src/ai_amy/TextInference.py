@@ -12,7 +12,7 @@ import AmyUtils
 class TextInference:
     def __init__(self):
         self.llm = Llama(
-        model_path=AmyUtils.get_base_path() + "/ai_models/gemma-3-4b-it-Q4_K_M.gguf",
+        model_path=get_config_ai_text_model(),
         verbose=True,
         n_ctx=4096,
         )

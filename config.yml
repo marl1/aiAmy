@@ -1,3 +1,6 @@
 application:
   record_all_chats: True
   current_character: "stony"
+  ai_text_model: "gemma-3-4b-it-Q4_K_M.gguf" #Will look up into the "ai_models" folder.
+  #An external file is also possible, example:
+  #ai_text_model: "C:\\crea\\txt\\gguf\\Ministral-8B-Instruct-2410-Q4_K_S.gguf"

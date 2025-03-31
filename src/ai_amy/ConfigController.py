@@ -1,3 +1,4 @@
+import os
 import yaml
 import random
 import AmyUtils
@@ -22,7 +23,22 @@ except:
     exit(1)
 
 
+########## Application
+def get_config_log_chat():
+    return config['application']['record_all_chats']
 
+def get_config_current_character():
+    return config['application']['current_character']
+
+def get_config_ai_text_model():
+    model_path = config['application']['ai_text_model']
+    if os.path.isabs(model_path):
+        # The model path is an absolute path, he wants to use another model outside of amy's folder.
+        return model_path
+    else:
+        return f"{AmyUtils.get_base_path()}/ai_models/{model_path}"
+
+########### Character
 def get_config_personality():
     return character_config['personnality']
 
@@ -31,12 +47,6 @@ def get_config_knowledge():
 
 def get_config_appearance():
     return character_config['appearance']
-
-def get_config_log_chat():
-    return config['application']['record_all_chats']
-
-def get_config_current_character():
-    return config['application']['current_character']
 
 def get_config_random_impulse():
     ponderated_impulses = []
