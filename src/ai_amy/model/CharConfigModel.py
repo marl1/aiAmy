@@ -17,8 +17,8 @@ class CharConfigPictureModel(BaseModel):
     play_after_idle_time_max: Optional[int] = None
     play_on_mood: Optional[str] = None
     weight: Optional[int] = None
-    loop_min: Optional[int] = None
-    loop_max: Optional[int] = None
+    playing_time_min: Optional[int] = None
+    playing_time_max: Optional[int] = None
     model_config = {'extra': 'forbid'}
 
 class CharConfigModel(BaseModel):

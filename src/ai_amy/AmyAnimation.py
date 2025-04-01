@@ -1,7 +1,10 @@
+import random
 import threading
+from tkinter import Tk
+from typing import List
 import ImageLabel
 import AmyUtils
-from ConfigController import *
+from ConfigController import get_config_current_character, get_config_picture_from_mood
 from model.CharConfigModel import CharConfigPictureModel
 
 #https://medium.com/analytics-vidhya/how-to-create-a-thread-safe-singleton-class-in-python-822e1170a7f6
@@ -11,8 +14,9 @@ class AmyAnimation:
     _instance = None
     _lock = threading.Lock()
     _imageLabel :ImageLabel = None
+    _rootWindow :Tk = None
 
-    def __new__(cls, imageLabel :ImageLabel):
+    def __new__(cls, imageLabel :ImageLabel, rootWindow :Tk):
         if cls._instance is None: 
             with cls._lock:
                 # Another thread could have created the instance before we
@@ -20,6 +24,7 @@ class AmyAnimation:
                 if not cls._instance:
                     cls._instance = super().__new__(cls)
                     cls._imageLabel = imageLabel
+                    cls._rootWindow = imageLabel
         return cls._instance
 
     def changePicture(self, new_picture):
@@ -33,5 +38,8 @@ class AmyAnimation:
         # Get "happy" from the string Hello! [happy].
         amy_answer[amy_answer.rfind("[")+1:amy_answer.rfind("]")]
         print("amy_answer", amy_answer)
-        pictures_from_mood: CharConfigPictureModel = get_config_picture_from_mood("amy_answer")
-        self._imageLabel.load(AmyUtils.get_base_path() + "/chars/" + get_config_current_character() + "/img/" + random.choice(pictures_from_mood).file)
+        pictures_from_mood: List[CharConfigPictureModel] = get_config_picture_from_mood("amy_answer")
+        selected_picture_for_current_mood: CharConfigPictureModel = random.choice(pictures_from_mood)
+        self._imageLabel.load(AmyUtils.get_base_path() + "/chars/" + get_config_current_character() + "/img/" + selected_picture_for_current_mood.file)
+        stop_anim_after = random.randint(selected_picture_for_current_mood.playing_time_min*1000, selected_picture_for_current_mood.playing_time_min*1000)
+        self._rootWindow.after(stop_anim_after, lambda: self.changePicture("stony.png"))

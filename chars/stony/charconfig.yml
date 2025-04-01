@@ -22,19 +22,19 @@ pictures:
     play_after_idle_time_max:
     play_on_mood:
     weight: 2
-    loop_min: 1
-    loop_max: 1
+    playing_time_min: 1
+    playing_time_max: 1
   - file: "stonyBoiling.gif"
     play_after_idle_time_min: 30
     play_after_idle_time_max:
     play_on_mood: "angry"
     weight: 2
-    loop_min: 4
-    loop_max: 8
+    playing_time_min: 4
+    playing_time_max: 8
   - file: "stonyAngry.gif"
     play_after_idle_time_min: 30
     play_after_idle_time_max:
     play_on_mood: "angry"
     weight: 1
-    loop_min: 4
-    loop_max: 8
+    playing_time_min: 4
+    playing_time_max: 8
