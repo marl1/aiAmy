@@ -34,7 +34,7 @@ class AmyAnimation:
             self._imageLabel.load(AmyUtils.get_base_path() + "/chars/" + get_config_current_character() + "/img/" + new_picture)
 
     def changePictureAccordingToMood(self, amy_answer):
-        """ """
+        """ Get the part between bracket in Amy's answer that represent a feeling and play the picture accordingly, for the specified delay. """
         # Get "happy" from the string Hello! [happy].
         amy_answer[amy_answer.rfind("[")+1:amy_answer.rfind("]")]
         print("amy_answer", amy_answer)
