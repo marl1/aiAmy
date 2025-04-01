@@ -1,7 +1,7 @@
 import threading
 import ImageLabel
-import AmyUtils
-from ConfigController import *
+from .AmyUtils import *
+from .ConfigController import *
 
 #https://medium.com/analytics-vidhya/how-to-create-a-thread-safe-singleton-class-in-python-822e1170a7f6
 #https://stackoverflow.com/questions/50566934

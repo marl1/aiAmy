@@ -1,7 +1,7 @@
 import base64
 from llama_cpp import Llama
 from llama_cpp.llama_chat_format import Llava15ChatHandler
-from ConfigController import *
+from .ConfigController import *
 
 
 class VisionInference:

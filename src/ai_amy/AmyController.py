@@ -1,11 +1,11 @@
-import TextInference
-from Memory import Memory
+from .TextInference import *
+from .Memory import Memory
 from pydantic import ValidationError
-from MainWindow import MainWindow
+from .MainWindow import MainWindow
 from concurrent import futures
-from model.ChatCompletion import *
+from .model.ChatCompletion import *
 from loguru import logger
-from ConfigController import *
+from .ConfigController import *
 
 
 thread_pool_executor = futures.ThreadPoolExecutor(max_workers=1)
@@ -13,10 +13,10 @@ thread_pool_executor = futures.ThreadPoolExecutor(max_workers=1)
 class AmyController:
     IS_TEXT_INFERING=False
     def __init__(self):
-        logger.add("AiAmy.log", level="INFO", rotation="50 MB")
+        logger.add("logs/AiAmy.log", level="INFO", rotation="50 MB")
         logger.info(f"Launching AiAmy...")
         # Launch the LLM
-        self.text_inference = TextInference.TextInference()
+        self.text_inference = TextInference()
         # Create the Windows for the character
         self.main_window=MainWindow(self)
         self.main_window.root.after(0, lambda: self.main_window.amy_animation.changePicture("stony.png"))

@@ -1,8 +1,8 @@
 from llama_cpp import Llama
 from sklearn import get_config
-from ConfigController import *
-from Memory import Memory
-from model.ChatCompletion import Message
+from .ConfigController import *
+from .Memory import Memory
+from .model.ChatCompletion import Message
 from typing import List
 import json
 import AmyUtils

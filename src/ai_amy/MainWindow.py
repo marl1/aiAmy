@@ -1,11 +1,11 @@
 from tkinter import *
 import tkinter as tk
 from tkinter import scrolledtext
-from ScrollableReadOnlyText import *
-from AmyController import *
+from .ScrollableReadOnlyText import *
+from .AmyController import *
 from itertools import count
 from ImageLabel import *
-import AmyAnimation
+from .AmyAnimation import *
 
 class MainWindow:
     TEXT_INPUT_WIDTH = 30
@@ -36,7 +36,7 @@ class MainWindow:
         self.label.bind('<B1-Motion>', self.move_according_to_the_cursor)
         self.label.bind('<Button-2>', self.display_popup_menu)
         self.label.bind('<Button-3>', self.display_popup_menu)
-        self.amy_animation = AmyAnimation.AmyAnimation(self.label)
+        self.amy_animation = AmyAnimation(self.label)
 
     def update_pop_up_menu(self):
         """ Adds or removes elements from the popup menu (by creating a new menu) """
