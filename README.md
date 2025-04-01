@@ -29,3 +29,10 @@ pip install -e .[dev]
 #Launch the program.
 python aiAmy/main.py
 ```
+
+## Releasing
+```
+pyinstaller main.spec
+```
+
+-copy/paste config.yml+chars+ai_models (if not using an external model)

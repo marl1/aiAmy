@@ -3,16 +3,18 @@ import yaml
 import random
 import AmyUtils
 from loguru import logger
+import sys
 
 
 config =  []
 character_config =  []
+config_path = os.path.join(AmyUtils.get_base_path(),"config.yml")
 try:
-    with open("config.yml", "r") as yamlfile:
+    with open(config_path, "r") as yamlfile:
         config = yaml.load(yamlfile, Loader=yaml.FullLoader)
 except:
-    logger.error(f"Couldn't read config.yml file. Make sure the file is at the root level and readable.")
-    exit(1)
+    logger.error(f"Couldn't read {config_path}. Make sure the file is at the root level and readable.")
+    sys.exit(1)
 
 try:
     char_config_path = AmyUtils.get_base_path() + "/chars/" + config['application']['current_character'] + "/charconfig.yml"
@@ -20,7 +22,7 @@ try:
         character_config = yaml.load(yamlfile, Loader=yaml.FullLoader)
 except:
     logger.error(f"Couldn't read charconfig.yml file. Make sure the file is under {char_config_path} and readable.")
-    exit(1)
+    sys.exit(1)
 
 
 ########## Application

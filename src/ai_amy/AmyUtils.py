@@ -1,5 +1,7 @@
 import sys
 import os
+from loguru import logger
+
 
 def get_base_path():
     """Gets the base path for resources, whether running as script or bundled exe."""
@@ -11,5 +13,5 @@ def get_base_path():
         # Go up one level from the src/ai_amy directory to the project root
         base_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-
+    logger.info("BASE PATH IS " + base_path)
     return base_path

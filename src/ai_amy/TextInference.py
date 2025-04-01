@@ -11,11 +11,15 @@ import AmyUtils
 
 class TextInference:
     def __init__(self):
-        self.llm = Llama(
-        model_path=get_config_ai_text_model(),
-        verbose=True,
-        n_ctx=4096,
-        )
+        try:
+            self.llm = Llama(
+            model_path=get_config_ai_text_model(),
+            verbose=True,
+            n_ctx=4096,
+            )
+        except:
+            logger.error(f"Couldn't read {get_config_ai_text_model()}. Make sure the file is at the root level and readable.")
+            sys.exit(1)
 
     def getAnswerToText(self, text):
         print("here received", text)
