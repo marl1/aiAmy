@@ -15,26 +15,30 @@ impulses:
     weight: 5
 
 pictures:
-  - file: "stony.png"
+  - name: "stonyDefault"
+    file: "stony.png"
     default: True
-  - file: "stonyMove.gif"
+  - name: "stonyMove"
+    file: "stonyMove.gif"
     play_after_idle_time_min: 30
     play_after_idle_time_max:
     play_on_mood:
     weight: 2
-    playing_time_min: 1
-    playing_time_max: 1
-  - file: "stonyBoiling.gif"
-    play_after_idle_time_min: 30
-    play_after_idle_time_max:
+    playing_time_min: 8
+    playing_time_max: 20
+  - name: "stonyBoiling"
+    file: "stonyBoiling.gif"
     play_on_mood: "angry"
     weight: 2
     playing_time_min: 4
     playing_time_max: 8
-  - file: "stonyAngry.gif"
-    play_after_idle_time_min: 30
-    play_after_idle_time_max:
+    followed_by_picture: "stonyMove"
+  - name: "stonyAngry"
+    file: "stonyAngry.gif"
     play_on_mood: "angry"
     weight: 1
     playing_time_min: 4
     playing_time_max: 8
+    followed_by_picture: "stonyBoiling"
+  - name: "stonyABitAngry"
+    file: "stonyABitAngry.png"

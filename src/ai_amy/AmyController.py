@@ -1,3 +1,4 @@
+import re
 import TextInference
 from Memory import Memory
 from pydantic import ValidationError
@@ -19,7 +20,7 @@ class AmyController:
         self.text_inference = TextInference.TextInference()
         # Create the Windows for the character
         self.main_window=MainWindow(self)
-        self.main_window.root.after(0, lambda: self.main_window.amy_animation.changePicture("stony.png"))
+        self.main_window.root.after(0, lambda: self.main_window.amy_animation.changePicture(get_config_default_picture().file))
         self.main_window.start_mainloop()
 
     def send_text(self, text):
@@ -40,8 +41,8 @@ class AmyController:
             Memory.saveMessage(Message(role="assistant", content=amy_answer))
             if(get_config_log_chat()):
                 logger.info(f"AMY: {amy_answer}")
-            self.main_window.root.after(0, lambda: self.main_window.text_output.set_content(amy_answer))
-            self.main_window.root.after(0, lambda: self.main_window.amy_animation.changePictureAccordingToMood("I'm angry!! [angry]"))
+            self.main_window.root.after(0, lambda: self.main_window.text_output.set_content(re.sub(r"\[.*?\]", "", amy_answer)))
+            self.main_window.root.after(0, lambda: self.main_window.amy_animation.changePictureAccordingToMood(amy_answer))
             # If the answer is long the answer window may gets higher so we needs to update it.
             self.main_window.update_following_windows_position()
         except ValidationError as e:

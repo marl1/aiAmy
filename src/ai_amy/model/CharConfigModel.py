@@ -11,6 +11,7 @@ class CharImpulseConfigModel(BaseModel):
 
 class CharConfigPictureModel(BaseModel):
     """Represents a picture or animation configuration."""
+    name: str
     file: str
     default: Optional[bool] = Field(default=False)
     play_after_idle_time_min: Optional[int] = None
@@ -19,6 +20,7 @@ class CharConfigPictureModel(BaseModel):
     weight: Optional[int] = None
     playing_time_min: Optional[int] = None
     playing_time_max: Optional[int] = None
+    followed_by_picture: Optional[str] = None
     model_config = {'extra': 'forbid'}
 
 class CharConfigModel(BaseModel):

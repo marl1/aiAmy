@@ -5,7 +5,7 @@ import random
 import AmyUtils
 from loguru import logger
 import sys
-from model.CharConfigModel import CharConfigModel
+from model.CharConfigModel import CharConfigModel, CharConfigPictureModel
 
 
 config =  []
@@ -66,6 +66,18 @@ def get_config_random_impulse():
 def get_config_picture_from_mood(mood: str):
     ponderated_pictures_for_this_mood = []
     for picture in char_config_object.pictures:
-        if picture.play_on_mood:
+        if picture.play_on_mood and picture.play_on_mood == mood:
             ponderated_pictures_for_this_mood.extend([picture] * picture.weight)
     return ponderated_pictures_for_this_mood
+
+def get_config_picture_from_name(picture_name: str) -> CharConfigPictureModel:
+    for picture in char_config_object.pictures:
+        if picture.name == picture_name:
+            return picture
+    return None
+
+def get_config_default_picture() -> CharConfigPictureModel:
+    for picture in char_config_object.pictures:
+        if picture.default == True:
+            return picture
+    return None
