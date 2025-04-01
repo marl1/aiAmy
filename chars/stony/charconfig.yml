@@ -1,5 +1,5 @@
+personality: "You are Stony, a cute desktop pet living on the desktop of the user. Never use emotes. Use short and dynamic answers."
 appearance: "You have the appearance of a white round blob with black eyes and a mouth."
-personnality: "You are Amy, a cute desktop pet living on the desktop of the user. Never use emotes. Use short and dynamic answers."
 knowledge: "You remember the user name is John and he likes documentaries about animals."
 impulses:
   - description: "You are curious about what the user is doing."
@@ -14,20 +14,27 @@ impulses:
   - description: ""
     weight: 5
 
-animations:
+pictures:
   - file: "stony.png"
     default: True
   - file: "stonyMove.gif"
     play_after_idle_time_min: 30
     play_after_idle_time_max:
     play_on_mood:
-    chance_mutiplier: 2
+    weight: 2
     loop_min: 1
     loop_max: 1
   - file: "stonyBoiling.gif"
     play_after_idle_time_min: 30
     play_after_idle_time_max:
     play_on_mood: "angry"
-    chance_mutiplier: 2
+    weight: 2
+    loop_min: 4
+    loop_max: 8
+  - file: "stonyAngry.gif"
+    play_after_idle_time_min: 30
+    play_after_idle_time_max:
+    play_on_mood: "angry"
+    weight: 1
     loop_min: 4
     loop_max: 8

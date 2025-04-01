@@ -1,13 +1,14 @@
 import os
+from pydantic import ValidationError
 import yaml
 import random
 import AmyUtils
 from loguru import logger
 import sys
+from model.CharConfigModel import CharConfigModel
 
 
 config =  []
-character_config =  []
 config_path = os.path.join(AmyUtils.get_base_path(),"config.yml")
 try:
     with open(config_path, "r") as yamlfile:
@@ -17,13 +18,19 @@ except:
     sys.exit(1)
 
 try:
-    char_config_path = AmyUtils.get_base_path() + "/chars/" + config['application']['current_character'] + "/charconfig.yml"
+    char_config_path = os.path.join(AmyUtils.get_base_path(),"chars",config['application']['current_character'],"charconfig.yml")
     with open(char_config_path, "r") as yamlfile:
-        character_config = yaml.load(yamlfile, Loader=yaml.FullLoader)
+        character_config_dict = yaml.load(yamlfile, Loader=yaml.FullLoader)
 except:
     logger.error(f"Couldn't read charconfig.yml file. Make sure the file is under {char_config_path} and readable.")
     sys.exit(1)
 
+try:
+    char_config_object: CharConfigModel = CharConfigModel.model_validate(character_config_dict)
+except ValidationError as e:
+    logger.error(f"Character configuration file {char_config_path} has invalid structure or data types:")
+    logger.error(e)
+    sys.exit(1)
 
 ########## Application
 def get_config_log_chat():
@@ -42,16 +49,23 @@ def get_config_ai_text_model():
 
 ########### Character
 def get_config_personality():
-    return character_config['personnality']
+    return char_config_object.personality
 
 def get_config_knowledge():
-    return character_config['knowledge']
+    return char_config_object.knowledge
 
 def get_config_appearance():
-    return character_config['appearance']
+    return char_config_object.appearance
 
 def get_config_random_impulse():
     ponderated_impulses = []
-    for impulse in character_config['impulses']:
-        ponderated_impulses.extend([impulse] * impulse['weight'])
-    return random.choice(ponderated_impulses)['description']
+    for impulse in char_config_object.impulses:
+        ponderated_impulses.extend([impulse] * impulse.weight)
+    return random.choice(ponderated_impulses).description
+
+def get_config_picture_from_mood(mood: str):
+    ponderated_pictures_for_this_mood = []
+    for picture in char_config_object.pictures:
+        if picture.play_on_mood:
+            ponderated_pictures_for_this_mood.extend([picture] * picture.weight)
+    return ponderated_pictures_for_this_mood
