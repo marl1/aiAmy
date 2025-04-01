@@ -15,6 +15,7 @@ class AmyAnimation:
     _lock = threading.Lock()
     _imageLabel :ImageLabel = None
     _rootWindow :Tk = None
+    _tkinter_waiting_process_ids :List[str]=[]
 
     def __new__(cls, imageLabel :ImageLabel, rootWindow :Tk):
         if cls._instance is None: 
@@ -39,12 +40,18 @@ class AmyAnimation:
         mood = amy_answer[amy_answer.rfind("[")+1:amy_answer.rfind("]")]
         pictures_from_mood: List[CharConfigPictureModel] = get_config_picture_from_mood(mood)
         if pictures_from_mood:
+            # A mood is coming right from the LLM, adapted to the text.
+            # The animation have the highest priority so we cancel if some were waiting to be chained.
+            for waiting_process in self._tkinter_waiting_process_ids:
+                self._rootWindow.after_cancel(waiting_process)
+            self._tkinter_waiting_process_ids.clear()
             self.loadAnimation(random.choice(pictures_from_mood))
 
     
     def loadAnimation(self, picture_to_load: CharConfigPictureModel):
-            """ Load the specified animation and prepare the next one. """
+            """ Load the specified animation and prepare the next animation. """
             self.changePicture(picture_to_load.file)
+            print("self._tkinter_waiting_process_ids", self._tkinter_waiting_process_ids)
             # Load the next animation if there's a time limit for the current one
             if picture_to_load.playing_time_min and not picture_to_load.playing_time_max:
                 picture_to_load.playing_time_max = picture_to_load.playing_time_min
@@ -55,6 +62,10 @@ class AmyAnimation:
                 print("stop_anim_after", stop_anim_after)
                 next_picture :CharConfigPictureModel=get_config_picture_from_name(picture_to_load.followed_by_picture)
                 if next_picture:
-                    self._rootWindow.after(stop_anim_after, lambda: self.loadAnimation(next_picture))
+                    self._tkinter_waiting_process_ids.append(
+                        self._rootWindow.after(stop_anim_after, lambda: self.loadAnimation(next_picture))
+                    )
                 else:
-                    self._rootWindow.after(stop_anim_after, lambda: self.loadAnimation(get_config_default_picture()))
+                    self._tkinter_waiting_process_ids.append(
+                        self._rootWindow.after(stop_anim_after, lambda: self.loadAnimation(get_config_default_picture()))
+                    )
