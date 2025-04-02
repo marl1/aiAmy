@@ -17,7 +17,7 @@ class CharConfigPictureModel(BaseModel):
     play_after_idle_time_min: Optional[int] = None
     play_after_idle_time_max: Optional[int] = None
     play_on_mood: Optional[str] = None
-    add_to_reply: Optional[str] = None
+    add_to_memory: Optional[str] = None
     weight: Optional[int] = None
     playing_time_ms_min: Optional[int] = None
     playing_time_ms_max: Optional[int] = None

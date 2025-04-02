@@ -38,9 +38,7 @@ class AmyController:
         try:
             chat:ChatCompletion = ChatCompletion.model_validate(answer)
             amy_answer = chat.choices[0].message.content
-            self.main_window.root.after(0, lambda: self.main_window.text_output.set_content(re.sub(r"\[.*?\]", "", amy_answer)))
-            self.main_window.root.after(0, lambda: self.main_window.amy_animation.changePictureAccordingToMood(amy_answer))
-            Memory.saveMessage(Message(role="assistant", content=amy_answer))
+            self.main_window.root.after(0, self.handle_answer, amy_answer)
             if(get_config_log_chat()):
                 logger.info(f"AMY: {amy_answer}")
             # If the answer is long the answer window may gets higher so we needs to update it.
@@ -48,3 +46,12 @@ class AmyController:
         except ValidationError as e:
             logger.error(f"Couldn't handle the following answer from the LLM: {answer}")
         self.IS_TEXT_INFERING = False
+
+    def handle_answer(self, amy_answer):
+        """ Operations done upon Amy answering. """
+        self.main_window.text_output.set_content(re.sub(r"\[.*?\]", "", amy_answer))
+        picture :CharConfigPictureModel = self.main_window.amy_animation.changePictureAccordingToMood(amy_answer)
+        message_to_add_in_memory = amy_answer
+        if picture and picture.add_to_memory:
+            message_to_add_in_memory = " " + picture.add_to_memory
+        Memory.saveMessage(Message(role="assistant", content=message_to_add_in_memory))

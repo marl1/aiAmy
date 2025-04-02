@@ -37,6 +37,7 @@ class AmyAnimation:
     def changePictureAccordingToMood(self, amy_answer):
         """ Get the part between bracket in Amy's answer that represent a feeling and play the picture accordingly, for the specified delay. """
         # Get "happy" from the string Hello! [happy].
+        chosen_picture :CharConfigPictureModel = None
         mood = amy_answer[amy_answer.rfind("[")+1:amy_answer.rfind("]")]
         pictures_from_mood: List[CharConfigPictureModel] = get_config_picture_from_mood(mood)
         if pictures_from_mood:
@@ -45,7 +46,9 @@ class AmyAnimation:
             for waiting_process in self._tkinter_waiting_process_ids:
                 self._rootWindow.after_cancel(waiting_process)
             self._tkinter_waiting_process_ids.clear()
-            self.loadAnimation(random.choice(pictures_from_mood))
+            chosen_picture = random.choice(pictures_from_mood)
+            self.loadAnimation(chosen_picture)
+        return chosen_picture
 
     
     def loadAnimation(self, picture_to_load: CharConfigPictureModel):

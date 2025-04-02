@@ -49,7 +49,7 @@ pictures:
     weight: 2
     playing_time_ms_min: 8000
     playing_time_ms_max: 20000
-    add_to_reply: "*moving around*"
+    add_to_memory: "*moving around*"
   - name: "stonyBoiling"
     file: "stonyBoiling.gif"
     play_on_mood: "angry"
@@ -58,7 +58,7 @@ pictures:
     playing_time_ms_max: 8000
     followed_by_one_of_these_pictures:
       - "stonyMove"
-    add_to_reply: "*reddish and agitated*"
+    add_to_memory: "*reddish and agitated*"
   - name: "stonyAngry"
     file: "stonyAngry.gif"
     play_on_mood: "angry"
@@ -68,6 +68,6 @@ pictures:
     followed_by_one_of_these_pictures:
       - "stonyBoiling"
       - "stonyMove"
-    add_to_reply: "*bouncing up and down*"
+    add_to_memory: "*bouncing up and down*"
   - name: "stonyABitAngry"
     file: "stonyABitAngry.png"
