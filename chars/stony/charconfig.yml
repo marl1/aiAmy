@@ -1,5 +1,5 @@
 personality: "You are Stony, a cute desktop pet living on the desktop of the user. Never use emotes. Use short and dynamic answers."
-appearance: "You have the appearance of a white round blob with black eyes and a mouth."
+appearance: "You have the appearance of a white round blob with black eyes and a mouth and the ability to wiggle around and jump."
 knowledge: "You remember the user name is John and he likes documentaries about animals."
 impulses:
   - description: "You are curious about what the user is doing."
@@ -14,31 +14,60 @@ impulses:
   - description: ""
     weight: 5
 
+# idles:
+#   - name: "idleWalking"
+#     picture: "stonyMove"
+#     after: 120
+#     never_after: 500
+#     percent_chance: 9
+#     text:
+#       - "Walking around..."
+#       - "Just walking around."
+#       - ""
+#       - ""
+#       - ""
+      #followed_by_one_of_these_idle
+#     summarize_and_reset_dialog: True
+#   - name: "idleWatching"
+#     picture: "stonyMove"
+#     after: 120
+#     never_after: 500
+#     text:
+#       - "Walking around..."
+#       - "Just walking around."
+#       - ""
+#       - ""
+#       - ""
+#     summarize_and_reset_dialog: True
+
 pictures:
   - name: "stonyDefault"
     file: "stony.png"
     default: True
   - name: "stonyMove"
     file: "stonyMove.gif"
-    play_after_idle_time_min: 30
-    play_after_idle_time_max:
-    play_on_mood:
     weight: 2
-    playing_time_min: 8
-    playing_time_max: 20
+    playing_time_ms_min: 8000
+    playing_time_ms_max: 20000
+    add_to_reply: "*moving around*"
   - name: "stonyBoiling"
     file: "stonyBoiling.gif"
     play_on_mood: "angry"
     weight: 2
-    playing_time_min: 4
-    playing_time_max: 8
-    followed_by_picture: "stonyMove"
+    playing_time_ms_min: 4000
+    playing_time_ms_max: 8000
+    followed_by_one_of_these_pictures:
+      - "stonyMove"
+    add_to_reply: "*reddish and agitated*"
   - name: "stonyAngry"
     file: "stonyAngry.gif"
     play_on_mood: "angry"
-    weight: 1
-    playing_time_min: 4
-    playing_time_max: 8
-    followed_by_picture: "stonyBoiling"
+    weight: 10
+    playing_time_ms_min: 4000
+    playing_time_ms_max: 8000
+    followed_by_one_of_these_pictures:
+      - "stonyBoiling"
+      - "stonyMove"
+    add_to_reply: "*bouncing up and down*"
   - name: "stonyABitAngry"
     file: "stonyABitAngry.png"

@@ -17,10 +17,11 @@ class CharConfigPictureModel(BaseModel):
     play_after_idle_time_min: Optional[int] = None
     play_after_idle_time_max: Optional[int] = None
     play_on_mood: Optional[str] = None
+    add_to_reply: Optional[str] = None
     weight: Optional[int] = None
-    playing_time_min: Optional[int] = None
-    playing_time_max: Optional[int] = None
-    followed_by_picture: Optional[str] = None
+    playing_time_ms_min: Optional[int] = None
+    playing_time_ms_max: Optional[int] = None
+    followed_by_one_of_these_pictures: Optional[List[str]] = None
     model_config = {'extra': 'forbid'}
 
 class CharConfigModel(BaseModel):

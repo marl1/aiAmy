@@ -38,11 +38,11 @@ class AmyController:
         try:
             chat:ChatCompletion = ChatCompletion.model_validate(answer)
             amy_answer = chat.choices[0].message.content
+            self.main_window.root.after(0, lambda: self.main_window.text_output.set_content(re.sub(r"\[.*?\]", "", amy_answer)))
+            self.main_window.root.after(0, lambda: self.main_window.amy_animation.changePictureAccordingToMood(amy_answer))
             Memory.saveMessage(Message(role="assistant", content=amy_answer))
             if(get_config_log_chat()):
                 logger.info(f"AMY: {amy_answer}")
-            self.main_window.root.after(0, lambda: self.main_window.text_output.set_content(re.sub(r"\[.*?\]", "", amy_answer)))
-            self.main_window.root.after(0, lambda: self.main_window.amy_animation.changePictureAccordingToMood(amy_answer))
             # If the answer is long the answer window may gets higher so we needs to update it.
             self.main_window.update_following_windows_position()
         except ValidationError as e:

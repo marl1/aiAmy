@@ -51,20 +51,19 @@ class AmyAnimation:
     def loadAnimation(self, picture_to_load: CharConfigPictureModel):
             """ Load the specified animation and prepare the next animation. """
             self.changePicture(picture_to_load.file)
-            print("self._tkinter_waiting_process_ids", self._tkinter_waiting_process_ids)
             # Load the next animation if there's a time limit for the current one
-            if picture_to_load.playing_time_min and not picture_to_load.playing_time_max:
-                picture_to_load.playing_time_max = picture_to_load.playing_time_min
-            if picture_to_load.playing_time_min and not picture_to_load.playing_time_min:
-                picture_to_load.playing_time_min = picture_to_load.playing_time_max
-            if picture_to_load.playing_time_min and picture_to_load.playing_time_max:       
-                stop_anim_after = random.randint(picture_to_load.playing_time_min*1000, picture_to_load.playing_time_min*1000)
-                print("stop_anim_after", stop_anim_after)
-                next_picture :CharConfigPictureModel=get_config_picture_from_name(picture_to_load.followed_by_picture)
-                if next_picture:
-                    self._tkinter_waiting_process_ids.append(
-                        self._rootWindow.after(stop_anim_after, lambda: self.loadAnimation(next_picture))
-                    )
+            if picture_to_load.playing_time_ms_min and not picture_to_load.playing_time_ms_max:
+                picture_to_load.playing_time_ms_max = picture_to_load.playing_time_ms_min
+            if picture_to_load.playing_time_ms_min and not picture_to_load.playing_time_ms_min:
+                picture_to_load.playing_time_ms_min = picture_to_load.playing_time_ms_max
+            if picture_to_load.playing_time_ms_min and picture_to_load.playing_time_ms_max:       
+                stop_anim_after = random.randint(picture_to_load.playing_time_ms_min, picture_to_load.playing_time_ms_min)
+                if picture_to_load.followed_by_one_of_these_pictures:
+                    next_picture :CharConfigPictureModel=get_config_picture_from_name(random.choice(picture_to_load.followed_by_one_of_these_pictures))
+                    if next_picture:
+                        self._tkinter_waiting_process_ids.append(
+                            self._rootWindow.after(stop_anim_after, lambda: self.loadAnimation(next_picture))
+                        )
                 else:
                     self._tkinter_waiting_process_ids.append(
                         self._rootWindow.after(stop_anim_after, lambda: self.loadAnimation(get_config_default_picture()))
