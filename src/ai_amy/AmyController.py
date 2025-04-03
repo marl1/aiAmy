@@ -1,12 +1,14 @@
 import re
+import sys
 import TextInference
+from model.CharConfigModel import CharConfigPictureModel
+import config_module as config
 from Memory import Memory
 from pydantic import ValidationError
 from MainWindow import MainWindow
 from concurrent import futures
 from model.ChatCompletion import *
 from loguru import logger
-from ConfigController import *
 
 
 thread_pool_executor = futures.ThreadPoolExecutor(max_workers=1)
@@ -16,11 +18,12 @@ class AmyController:
     def __init__(self):
         logger.add("AiAmy.log", level="INFO", rotation="50 MB")
         logger.info(f"Launching AiAmy...")
+        config.init_config_controller()
         # Launch the LLM
         self.text_inference = TextInference.TextInference()
         # Create the Windows for the character
         self.main_window=MainWindow(self)
-        self.main_window.root.after(0, lambda: self.main_window.amy_animation.changePicture(get_config_default_picture().file))
+        self.main_window.root.after(0, lambda: self.main_window.amy_animation.changePicture(config.get().get_config_default_picture().file))
         self.main_window.start_mainloop()
 
     def send_text(self, text):
@@ -33,13 +36,13 @@ class AmyController:
             logger.error(f"Got {text} to infer but we were already infering.")
             return # We are alrealdy generating text so we exit.
         answer = self.text_inference.getAnswerToText(text)
-        if(get_config_log_chat()):
+        if(config.get().get_config_log_chat()):
             logger.info(f"USER: {text}")
         try:
             chat:ChatCompletion = ChatCompletion.model_validate(answer)
             amy_answer = chat.choices[0].message.content
             self.main_window.root.after(0, self.handle_answer, amy_answer)
-            if(get_config_log_chat()):
+            if(config.get().get_config_log_chat()):
                 logger.info(f"AMY: {amy_answer}")
             # If the answer is long the answer window may gets higher so we needs to update it.
             self.main_window.update_following_windows_position()

@@ -4,7 +4,7 @@ from tkinter import Tk
 from typing import List
 import ImageLabel
 import AmyUtils
-from ConfigController import get_config_current_character, get_config_default_picture, get_config_picture_from_mood, get_config_picture_from_name
+import config_module as config
 from model.CharConfigModel import CharConfigPictureModel
 
 #https://medium.com/analytics-vidhya/how-to-create-a-thread-safe-singleton-class-in-python-822e1170a7f6
@@ -32,14 +32,14 @@ class AmyAnimation:
         """ Thread safe. Change the picture of Amy. """
         with self._lock:
             self._imageLabel.unload()
-            self._imageLabel.load(AmyUtils.get_base_path() + "/chars/" + get_config_current_character() + "/img/" + new_picture)
+            self._imageLabel.load(AmyUtils.get_base_path() + "/chars/" + config.get().get_config_current_character() + "/img/" + new_picture)
 
     def changePictureAccordingToMood(self, amy_answer):
         """ Get the part between bracket in Amy's answer that represent a feeling and play the picture accordingly, for the specified delay. """
         # Get "happy" from the string Hello! [happy].
         chosen_picture :CharConfigPictureModel = None
         mood = amy_answer[amy_answer.rfind("[")+1:amy_answer.rfind("]")]
-        pictures_from_mood: List[CharConfigPictureModel] = get_config_picture_from_mood(mood)
+        pictures_from_mood: List[CharConfigPictureModel] = config.get().get_config_picture_from_mood(mood)
         if pictures_from_mood:
             # A mood is coming right from the LLM, adapted to the text.
             # The animation have the highest priority so we cancel if some were waiting to be chained.
@@ -62,12 +62,12 @@ class AmyAnimation:
             if picture_to_load.playing_time_ms_min and picture_to_load.playing_time_ms_max:       
                 stop_anim_after = random.randint(picture_to_load.playing_time_ms_min, picture_to_load.playing_time_ms_min)
                 if picture_to_load.followed_by_one_of_these_pictures:
-                    next_picture :CharConfigPictureModel=get_config_picture_from_name(random.choice(picture_to_load.followed_by_one_of_these_pictures))
+                    next_picture :CharConfigPictureModel=config.get().get_config_picture_from_name(random.choice(picture_to_load.followed_by_one_of_these_pictures))
                     if next_picture:
                         self._tkinter_waiting_process_ids.append(
                             self._rootWindow.after(stop_anim_after, lambda: self.loadAnimation(next_picture))
                         )
                 else:
                     self._tkinter_waiting_process_ids.append(
-                        self._rootWindow.after(stop_anim_after, lambda: self.loadAnimation(get_config_default_picture()))
+                        self._rootWindow.after(stop_anim_after, lambda: self.loadAnimation(config.get().get_config_default_picture()))
                     )
