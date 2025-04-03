@@ -12,7 +12,6 @@ import AmyUtils
 
 class TextInference:
     def __init__(self):
-        print("config.get().get_config_ai_text_model()", config.get().get_config_ai_text_model())
         try:
             self.llm = Llama(
             model_path=config.get().get_config_ai_text_model(),
@@ -21,7 +20,6 @@ class TextInference:
             )
         except:
             logger.error(f"Couldn't read {config.get().get_config_ai_text_model()}. Make sure the file is really there and readable.")
-            sys.exit(1)
 
     def getAnswerToText(self, text):
         print("here received", text)
