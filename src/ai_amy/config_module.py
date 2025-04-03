@@ -3,9 +3,10 @@ from pydantic import ValidationError
 import yaml
 import random
 import AmyUtils
+from typing import List
 from loguru import logger
 import sys
-from model.CharConfigModel import CharConfigModel, CharConfigPictureModel
+from model.CharConfigModel import CharConfigIdleModel, CharConfigModel, CharConfigPictureModel
 
 # Another approach at singleton, see below
 
@@ -33,7 +34,7 @@ class ConfigController:
             sys.exit(1)
 
         try:
-            self._char_config_object: CharConfigModel = CharConfigModel.model_validate(character_config_dict)
+            self._char_config: CharConfigModel = CharConfigModel.model_validate(character_config_dict)
         except ValidationError as e:
             logger.error(f"Character configuration file {char_config_path} has invalid structure or data types:")
             logger.error(e)
@@ -56,38 +57,63 @@ class ConfigController:
 
     ########### Character
     def get_config_personality(self):
-        return self._char_config_object.personality
+        return self._char_config.personality
 
     def get_config_knowledge(self):
-        return self._char_config_object.knowledge
+        return self._char_config.knowledge
 
     def get_config_appearance(self):
-        return self._char_config_object.appearance
+        return self._char_config.appearance
 
     def get_config_random_impulse(self):
         ponderated_impulses = []
-        for impulse in self._char_config_object.impulses:
+        for impulse in self._char_config.impulses:
             ponderated_impulses.extend([impulse] * impulse.weight)
         return random.choice(ponderated_impulses).description
 
     def get_config_picture_from_mood(self, mood: str):
         ponderated_pictures_for_this_mood = []
-        for picture in self._char_config_object.pictures:
+        for picture in self._char_config.pictures:
             if picture.play_on_mood and picture.play_on_mood == mood:
                 ponderated_pictures_for_this_mood.extend([picture] * picture.weight)
         return ponderated_pictures_for_this_mood
 
     def get_config_picture_from_name(self, picture_name: str) -> CharConfigPictureModel:
-        for picture in self._char_config_object.pictures:
+        for picture in self._char_config.pictures:
             if picture.name == picture_name:
                 return picture
         return None
 
     def get_config_default_picture(self) -> CharConfigPictureModel:
-        for picture in self._char_config_object.pictures:
+        for picture in self._char_config.pictures:
             if picture.default == True:
                 return picture
         return None
+    
+    def get_config_idle_from_idle_time(self, idle_time: str) -> List[CharConfigIdleModel]:
+        idles: List[CharConfigIdleModel] = []
+        print("a")
+        for idle in self._char_config.idles:
+            print("testing idle.name=", idle.name)
+            print("testing idle.after=", idle.after)
+            print("testing idle.never_after=", idle.never_after)
+            print("idle_time=", idle_time)
+            if idle.after and idle_time>=idle.after:
+                print("a")
+                if idle.never_after and idle_time<idle.never_after:
+                    print("bingo")
+                    idles.append(idle)
+                    break
+            if not idle.never_after and idle.after and idle_time>=idle.after:
+                idles.append(idle)
+                break
+            if not idle.after and idle.never_after and idle_time<idle.never_after:
+                idles.append(idle)
+                break
+            if not idle.after and not idle.never_after:
+                idles.append(idle)
+                break
+        return idles
 
 # So, it's another approach at singleton: this var is defined at the MODULE level (not class level, not instance level).
 _global_config_instance: ConfigController | None= None

@@ -24,6 +24,18 @@ class CharConfigPictureModel(BaseModel):
     followed_by_one_of_these_pictures: Optional[List[str]] = None
     model_config = {'extra': 'forbid'}
 
+class CharConfigIdleModel(BaseModel):
+    """Represent an action that will be launched after a specified amount of inactivity time."""
+    name: str = None
+    picture: Optional[str] = None
+    after: Optional[int] = None
+    never_after: Optional[int] = None
+    percent_chance: Optional[int] = None
+    percent_chance: Optional[float] = None
+    text: Optional[List[str]] = None
+    followed_by_one_of_these_idle: Optional[List[str]] = None
+    summarize_and_reset_dialog: Optional[bool] = None
+
 class CharConfigModel(BaseModel):
     """Configuration model for a desktop pet character."""
     personality: str
@@ -31,4 +43,5 @@ class CharConfigModel(BaseModel):
     knowledge: str
     impulses: List[CharImpulseConfigModel]
     pictures: List[CharConfigPictureModel]
+    idles: List[CharConfigIdleModel]
     model_config = {'extra': 'forbid'}

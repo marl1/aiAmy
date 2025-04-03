@@ -14,31 +14,32 @@ impulses:
   - description: ""
     weight: 5
 
-# idles:
-#   - name: "idleWalking"
-#     picture: "stonyMove"
-#     after: 120
-#     never_after: 500
-#     percent_chance: 9
-#     text:
-#       - "Walking around..."
-#       - "Just walking around."
-#       - ""
-#       - ""
-#       - ""
-      #followed_by_one_of_these_idle
-#     summarize_and_reset_dialog: True
-#   - name: "idleWatching"
-#     picture: "stonyMove"
-#     after: 120
-#     never_after: 500
-#     text:
-#       - "Walking around..."
-#       - "Just walking around."
-#       - ""
-#       - ""
-#       - ""
-#     summarize_and_reset_dialog: True
+idles:
+  - name: "idleWalking"
+    picture: "stonyMove"
+    after: 5
+    never_after: 7
+    percent_chance: 9
+    text:
+      - "Walking around..."
+      - "Just walking around."
+      - ""
+      - ""
+      - ""
+    followed_by_one_of_these_idle:
+      - "idleWatching"
+    summarize_and_reset_dialog: True
+  - name: "idleWatching"
+    picture: "stonyMove"
+    after: 120
+    never_after: 500
+    text:
+      - "Hmm hmm..."
+      - "Interesting..."
+      - ""
+      - ""
+      - ""
+    summarize_and_reset_dialog: True
 
 pictures:
   - name: "stonyDefault"

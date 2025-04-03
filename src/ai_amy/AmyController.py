@@ -1,6 +1,7 @@
 import re
 import sys
 import TextInference
+import idle_module
 from model.CharConfigModel import CharConfigPictureModel
 import config_module as config
 from Memory import Memory
@@ -19,11 +20,13 @@ class AmyController:
         logger.add("AiAmy.log", level="INFO", rotation="50 MB")
         logger.info(f"Launching AiAmy...")
         config.init_config_controller()
+        idle_module.init()
         # Launch the LLM
         self.text_inference = TextInference.TextInference()
         # Create the Windows for the character
         self.main_window=MainWindow(self)
         self.main_window.root.after(0, lambda: self.main_window.amy_animation.changePicture(config.get().get_config_default_picture().file))
+        self.main_window.root.after(1000, self.handle_idle)
         self.main_window.start_mainloop()
 
     def send_text(self, text):
@@ -58,3 +61,7 @@ class AmyController:
         if picture and picture.add_to_memory:
             message_to_add_in_memory = " " + picture.add_to_memory
         Memory.saveMessage(Message(role="assistant", content=message_to_add_in_memory))
+
+    def handle_idle(self):
+        idle_module.getIdle()
+        self.main_window.root.after(1000, self.handle_idle)
