@@ -28,7 +28,7 @@ class InputWindow:
         
         self.text_input.bind('<Return>', self.send_text)
         self.text_input.bind('<KeyRelease-Return>', self.clear_input_text)
-        self.text_input.bind('<Shift-Return>', lambda event: print(""))
+        self.text_input.bind('<Shift-Return>', lambda event: print("")) #to not trigger Return biding
         self.text_input.bind("<FocusIn>", self.make_opaque_amy_text_input)
         self.text_input.bind("<FocusOut>", self.make_transparent_amy_text_input)
         
@@ -47,9 +47,9 @@ class InputWindow:
     def send_text(self, event):
         self.amy_controller.send_text(self.text_input.get('1.0', 'end').rstrip())
         self.text_input.delete('1.0', END) # Clear the text but \n will be added just after
-        self.frame.focus()
     
     def clear_input_text(self, event):
+        self.frame.focus()
         if(self.text_input.get('1.0', 'end').strip()==""):
             self.text_input.delete('1.0', END)
 
