@@ -2,7 +2,7 @@ import tkinter as tk
 
 #Big thanks to Claude.ai for that class
 class ScrollableReadOnlyText:
-    def __init__(self, master, width=20, height=3):
+    def __init__(self, master, width=20, height=1):
         self.frame = tk.Frame(master)
         
         # Create a Text widget
@@ -52,8 +52,10 @@ class ScrollableReadOnlyText:
     def on_content_modified(self, event=None):
         if(len(self.text.get('1.0', 'end'))>80):
             self.text.configure(height=5)
-        else:
+        elif(len(self.text.get('1.0', 'end'))>40):
             self.text.configure(height=2)
+        else:
+            self.text.configure(height=1)
         self.text.edit_modified(False)
         self.check_scrollbar_needed()
     

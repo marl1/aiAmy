@@ -76,13 +76,13 @@ class MainWindow:
         text the character will say."""
         # Create a separate top-level window for the text input
         self.text_output_window = OutputWindow(self.root)
+        self.root.after(100, self.update_following_windows_position)
 
     def update_following_windows_position(self, event=None):
         """ To make the text input and out windows follow the character. """
-        if self.text_input_window:
+        if hasattr(self, 'text_input_window'):
             self.text_input_window.follow_main_window_position(self.root.winfo_x(), self.root.winfo_y(), self.root.winfo_height())
-
-        if self.text_output_window:
+        if hasattr(self, 'text_output_window'):
             self.text_output_window.follow_main_window_position(self.root.winfo_x(), self.root.winfo_y(), self.root.winfo_height())
 
 ###### all about inputting text #######
