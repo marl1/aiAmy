@@ -56,6 +56,9 @@ class ConfigController:
             return f"{AmyUtils.get_base_path()}/ai_models/{model_path}"
 
     ########### Character
+    def get_config_output_window_y_offset(self):
+        return self._char_config.output_window_y_offset
+    
     def get_config_personality(self):
         return self._char_config.personality
 

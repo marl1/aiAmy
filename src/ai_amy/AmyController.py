@@ -73,4 +73,6 @@ class AmyController:
             if idle_to_play.picture:
                 self.main_window.root.after(0, lambda: self.main_window.amy_animation.loadAnimation(config.get().get_config_picture_from_name(idle_to_play.picture)))
             if idle_to_play.text:
+                # A dummy message necessary to have the alternance user/bot/user/bot, if not the server is not happy.
+                Memory.saveMessage(Message(role="user", content=""))
                 self.main_window.root.after(0, self.handle_answer, random.choice(idle_to_play.text))

@@ -10,8 +10,6 @@ import AmyAnimation
 class OutputWindow:
     """ A separate window that follows the main window. It contains the
         text the character will say."""
-    TEXT_INPUT_WIDTH = 30
-    TEXT_INPUT_HEIGHT = 3
     TEXT_OUTPUT_WIDTH = 30
     TEXT_OUTPUT_HEIGHT = 5
     def __init__(self, main_window_root: Tk):
@@ -23,3 +21,9 @@ class OutputWindow:
         self.text = ScrollableReadOnlyText(self.frame, width=30, height=4)
         self.text.pack(fill=tk.BOTH, expand=True, padx=0, pady=0)
         self.text.set_content("Hello from Amy !")
+
+    def follow_main_window_position(self, main_window_x, main_window_y, main_window_height):
+            x = main_window_x - self.TEXT_OUTPUT_WIDTH * 2
+            y = main_window_y
+            self.frame.geometry(f'+{x+58}+{y-self.frame.winfo_height()+config.get().get_config_output_window_y_offset()}')
+

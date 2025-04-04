@@ -82,10 +82,8 @@ class MainWindow:
         if self.text_input_window:
             self.text_input_window.follow_main_window_position(self.root.winfo_x(), self.root.winfo_y(), self.root.winfo_height())
 
-        if hasattr(self, 'text_output_window') and self.text_output_window.frame.winfo_exists():
-            x = self.root.winfo_x() - self.TEXT_OUTPUT_WIDTH * 2
-            y = self.root.winfo_y()
-            self.text_output_window.frame.geometry(f'+{x+58}+{y-self.text_output_window.frame.winfo_height()+40}')
+        if self.text_output_window:
+            self.text_output_window.follow_main_window_position(self.root.winfo_x(), self.root.winfo_y(), self.root.winfo_height())
 
 ###### all about inputting text #######
     def add_amy_text_input(self):
