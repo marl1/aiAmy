@@ -17,7 +17,7 @@ impulses:
 idles:
   - name: "idleWalking"
     picture: "stonyMove"
-    after: 10
+    after: 60
     weight: 2 # How likely it will be picked up first to check the chance.
     per_thousand_chance: 100 # How likely the idle will play, random chance each second.
     text:
@@ -31,7 +31,7 @@ idles:
     summarize_and_reset_dialog: True
   - name: "idleWatching"
     picture: "stonyPerplexed"
-    after: 6
+    after: 40
     never_after: 900
     weight: 1
     per_thousand_chance: 100

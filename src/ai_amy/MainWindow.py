@@ -7,12 +7,12 @@ from itertools import count
 from ImageLabel import *
 import AmyAnimation
 from output_window_module import OutputWindow
+from input_window_module import InputWindow
 
 class MainWindow:
-    TEXT_INPUT_WIDTH = 30
-    TEXT_INPUT_HEIGHT = 3
     TEXT_OUTPUT_WIDTH = 30
     TEXT_OUTPUT_HEIGHT = 5
+
     def __init__(self, amy_controller):
         self.amy_controller = amy_controller
         # Create the main window
@@ -43,7 +43,7 @@ class MainWindow:
         """ Adds or removes elements from the popup menu (by creating a new menu) """
         self.popup = Menu(self.root, tearoff=0)
         self.popup.add_command(label="Configure") # , command=next) etc...
-        if(self.text_input.winfo_exists()):
+        if(self.text_input_window.text_input.winfo_exists()):
             self.popup.add_command(label="Hide text input", command=self.remove_amy_text_input)
         else:
             self.popup.add_command(label="Show text input", command=self.add_amy_text_input)
@@ -79,57 +79,20 @@ class MainWindow:
 
     def update_following_windows_position(self, event=None):
         """ To make the text input and out windows follow the character. """
-        if hasattr(self, 'text_input_window') and self.text_input_window.winfo_exists():
-            x = self.root.winfo_x() - self.TEXT_INPUT_WIDTH * 2
-            y = self.root.winfo_y()
-            self.text_input_window.geometry(f'+{x+45}+{y+self.root.winfo_height()}')
+        if self.text_input_window:
+            self.text_input_window.follow_main_window_position(self.root.winfo_x(), self.root.winfo_y(), self.root.winfo_height())
+
         if hasattr(self, 'text_output_window') and self.text_output_window.frame.winfo_exists():
-            x = self.root.winfo_x() - self.TEXT_INPUT_WIDTH * 2
+            x = self.root.winfo_x() - self.TEXT_OUTPUT_WIDTH * 2
             y = self.root.winfo_y()
             self.text_output_window.frame.geometry(f'+{x+58}+{y-self.text_output_window.frame.winfo_height()+40}')
 
 ###### all about inputting text #######
     def add_amy_text_input(self):
-        """ Adds a separate window that follows the main window. It contains a text area for
-        the user to write in."""
-        # Create a separate top-level window for the text input
-        self.text_input_window = tk.Toplevel(self.root)
-        self.text_input_window.overrideredirect(True)  # Remove window decorations
-        self.text_input_window.attributes('-topmost', True)
-        self.text_input_window.attributes('-alpha', 0.1)
-        
-        # Position the text window relative to the main window
-        x = self.root.winfo_x() - self.TEXT_INPUT_WIDTH * 2
-        y = self.root.winfo_y()
-        
-        self.text_input = Text(self.text_input_window, height=1, 
-                            width=self.TEXT_INPUT_WIDTH, bg="White")
-        self.text_input.pack(fill=tk.BOTH, expand=True)
-        
+        self.text_input_window = InputWindow(self.root, self.amy_controller)
+        self.update_following_windows_position()
         self.update_pop_up_menu()
-        self.text_input.bind('<Return>', self.send_text)
-        self.text_input.bind('<KeyRelease-Return>', self.clear_input_text)
-        self.text_input.bind('<Shift-Return>', lambda event: print(""))
-        self.text_input.bind("<FocusIn>", self.make_opaque_amy_text_input)
-        self.text_input.bind("<FocusOut>", self.make_transparent_amy_text_input)
-        
-
-    def make_opaque_amy_text_input(self, event):
-        self.text_input_window.attributes('-alpha', 1)
-        self.text_input.configure(height=self.TEXT_INPUT_HEIGHT)
-
-    def make_transparent_amy_text_input(self, event):
-        self.text_input_window.attributes('-alpha', 0.1)
-        self.text_input.configure(height=1)
 
     def remove_amy_text_input(self):
-        self.text_input_window.destroy()
+        self.text_input_window.remove_amy_text_input()
         self.update_pop_up_menu()
-
-    def send_text(self, event):
-        self.amy_controller.send_text(self.text_input.get('1.0', 'end').rstrip())
-        self.text_input.delete('1.0', END) # Clear the text but \n will be added just after
-    
-    def clear_input_text(self, event):
-        if(self.text_input.get('1.0', 'end').strip()==""):
-            self.text_input.delete('1.0', END)
