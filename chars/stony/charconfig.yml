@@ -37,6 +37,7 @@ idles:
     per_thousand_chance: 100
     text:
       - "Hmm hmm..."
+      - "What are you doing?"
       - "Interesting..."
       - ""
       - ""
@@ -54,8 +55,8 @@ pictures:
   - name: "stonyMove"
     file: "stonyMove.gif"
     weight: 2
-    playing_time_ms_min: 8000
-    playing_time_ms_max: 20000
+    playing_time_ms_min: 15000
+    playing_time_ms_max: 40000
     add_to_memory: "*moving around*"
   - name: "stonyBoiling"
     file: "stonyBoiling.gif"

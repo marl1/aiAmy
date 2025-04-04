@@ -1,3 +1,4 @@
+import random
 import re
 import sys
 import TextInference
@@ -40,7 +41,6 @@ class AmyController:
             logger.error(f"Got {text} to infer but we were already infering.")
             return # We are alrealdy generating text so we exit.
         self.IS_TEXT_INFERING = True
-        idle_module.reset()
         answer = self.text_inference.getAnswerToText(text)
         if(config.get().get_config_log_chat()):
             logger.info(f"USER: {text}")
@@ -56,9 +56,10 @@ class AmyController:
             logger.error(f"Couldn't handle the following answer from the LLM: {answer}")
         self.IS_TEXT_INFERING = False
 
-    def handle_answer(self, amy_answer):
+    def handle_answer(self, amy_answer: str):
         """ Operations done upon Amy answering. """
-        self.main_window.text_output.set_content(re.sub(r"\[.*?\]", "", amy_answer))
+        idle_module.reset()
+        self.main_window.text_output_window.text.set_content(re.sub(r"\[.*?\]", "", amy_answer))
         picture :CharConfigPictureModel = self.main_window.amy_animation.changePictureAccordingToMood(amy_answer)
         message_to_add_in_memory = amy_answer
         if picture and picture.add_to_memory:
@@ -66,9 +67,10 @@ class AmyController:
         Memory.saveMessage(Message(role="assistant", content=message_to_add_in_memory))
 
     def handle_idle(self):
-        need_to_play_idle: CharConfigIdleModel = idle_module.getIdle()
-        print("need_to_play_idle", need_to_play_idle)
+        idle_to_play: CharConfigIdleModel = idle_module.getIdle()
         self.main_window.root.after(1000, self.handle_idle)
-        if need_to_play_idle and not self.IS_TEXT_INFERING:
-            if need_to_play_idle.picture:
-                self.main_window.root.after(0, lambda: self.main_window.amy_animation.loadAnimation(config.get().get_config_picture_from_name(need_to_play_idle.picture)))
+        if idle_to_play and not self.IS_TEXT_INFERING:
+            if idle_to_play.picture:
+                self.main_window.root.after(0, lambda: self.main_window.amy_animation.loadAnimation(config.get().get_config_picture_from_name(idle_to_play.picture)))
+            if idle_to_play.text:
+                self.main_window.root.after(0, self.handle_answer, random.choice(idle_to_play.text))

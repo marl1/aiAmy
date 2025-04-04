@@ -92,7 +92,6 @@ class ConfigController:
     
     def get_config_idle_from_idle_time(self, idle_time: str) -> List[CharConfigIdleModel]:
         idles: List[CharConfigIdleModel] = []
-        print("a")
         for idle in self._char_config.idles:
             if idle.after and idle_time>=idle.after:
                 if idle.never_after and idle_time<idle.never_after:

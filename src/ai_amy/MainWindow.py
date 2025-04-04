@@ -6,6 +6,7 @@ from AmyController import *
 from itertools import count
 from ImageLabel import *
 import AmyAnimation
+from output_window_module import OutputWindow
 
 class MainWindow:
     TEXT_INPUT_WIDTH = 30
@@ -74,14 +75,7 @@ class MainWindow:
         """ Adds a separate window that follows the main window. It contains the
         text the character will say."""
         # Create a separate top-level window for the text input
-        self.text_output_window = tk.Toplevel(self.root)
-        self.text_output_window.attributes('-alpha', 0.7)
-        self.text_output_window.overrideredirect(True)  # Remove window decorations
-        self.text_output_window.attributes('-topmost', True)
-
-        self.text_output = ScrollableReadOnlyText(self.text_output_window, width=30, height=4)
-        self.text_output.pack(fill=tk.BOTH, expand=True, padx=0, pady=0)
-        self.text_output.set_content("Hello from Amy !")
+        self.text_output_window = OutputWindow(self.root)
 
     def update_following_windows_position(self, event=None):
         """ To make the text input and out windows follow the character. """
@@ -89,10 +83,10 @@ class MainWindow:
             x = self.root.winfo_x() - self.TEXT_INPUT_WIDTH * 2
             y = self.root.winfo_y()
             self.text_input_window.geometry(f'+{x+45}+{y+self.root.winfo_height()}')
-        if hasattr(self, 'text_output_window') and self.text_output_window.winfo_exists():
+        if hasattr(self, 'text_output_window') and self.text_output_window.frame.winfo_exists():
             x = self.root.winfo_x() - self.TEXT_INPUT_WIDTH * 2
             y = self.root.winfo_y()
-            self.text_output_window.geometry(f'+{x+58}+{y-self.text_output_window.winfo_height()+40}')
+            self.text_output_window.frame.geometry(f'+{x+58}+{y-self.text_output_window.frame.winfo_height()+40}')
 
 ###### all about inputting text #######
     def add_amy_text_input(self):

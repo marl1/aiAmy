@@ -33,7 +33,6 @@ def getIdle() -> CharConfigIdleModel:
             # Remove it from both lists using the index
             possible_idles.pop(idx_to_remove)
             idles_weight.pop(idx_to_remove)
-            print(idle_candidate, "was not selected")
             if not possible_idles:
                 return None
 def reset():
