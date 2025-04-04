@@ -2,7 +2,7 @@ import re
 import sys
 import TextInference
 import idle_module
-from model.CharConfigModel import CharConfigPictureModel
+from model.CharConfigModel import CharConfigIdleModel, CharConfigPictureModel
 import config_module as config
 from Memory import Memory
 from pydantic import ValidationError
@@ -31,13 +31,16 @@ class AmyController:
 
     def send_text(self, text):
         print("received ", text)
-        thread_pool_executor.submit(self.fetch_answer, text)
+        if not self.IS_TEXT_INFERING:
+            thread_pool_executor.submit(self.fetch_answer, text)
 
     def fetch_answer(self, text):
         """ Interrogate the text model. """
         if (self.IS_TEXT_INFERING):
             logger.error(f"Got {text} to infer but we were already infering.")
             return # We are alrealdy generating text so we exit.
+        self.IS_TEXT_INFERING = True
+        idle_module.reset()
         answer = self.text_inference.getAnswerToText(text)
         if(config.get().get_config_log_chat()):
             logger.info(f"USER: {text}")
@@ -63,5 +66,9 @@ class AmyController:
         Memory.saveMessage(Message(role="assistant", content=message_to_add_in_memory))
 
     def handle_idle(self):
-        idle_module.getIdle()
+        need_to_play_idle: CharConfigIdleModel = idle_module.getIdle()
+        print("need_to_play_idle", need_to_play_idle)
         self.main_window.root.after(1000, self.handle_idle)
+        if need_to_play_idle and not self.IS_TEXT_INFERING:
+            if need_to_play_idle.picture:
+                self.main_window.root.after(0, lambda: self.main_window.amy_animation.loadAnimation(config.get().get_config_picture_from_name(need_to_play_idle.picture)))

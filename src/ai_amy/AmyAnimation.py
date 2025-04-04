@@ -53,6 +53,7 @@ class AmyAnimation:
     
     def loadAnimation(self, picture_to_load: CharConfigPictureModel):
             """ Load the specified animation and prepare the next animation. """
+            print("need to change the picture to",picture_to_load)
             self.changePicture(picture_to_load.file)
             # Load the next animation if there's a time limit for the current one
             if picture_to_load.playing_time_ms_min and not picture_to_load.playing_time_ms_max:

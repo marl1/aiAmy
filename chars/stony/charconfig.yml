@@ -17,9 +17,9 @@ impulses:
 idles:
   - name: "idleWalking"
     picture: "stonyMove"
-    after: 5
-    never_after: 7
-    percent_chance: 9
+    after: 10
+    weight: 2 # How likely it will be picked up first to check the chance.
+    per_thousand_chance: 100 # How likely the idle will play, random chance each second.
     text:
       - "Walking around..."
       - "Just walking around."
@@ -30,9 +30,11 @@ idles:
       - "idleWatching"
     summarize_and_reset_dialog: True
   - name: "idleWatching"
-    picture: "stonyMove"
-    after: 120
-    never_after: 500
+    picture: "stonyPerplexed"
+    after: 6
+    never_after: 900
+    weight: 1
+    per_thousand_chance: 100
     text:
       - "Hmm hmm..."
       - "Interesting..."
@@ -45,6 +47,10 @@ pictures:
   - name: "stonyDefault"
     file: "stony.png"
     default: True
+  - name: "stonyPerplexed"
+    file: "stonyPerplexed.png"
+    playing_time_ms_min: 8000
+    playing_time_ms_max: 20000
   - name: "stonyMove"
     file: "stonyMove.gif"
     weight: 2

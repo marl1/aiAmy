@@ -94,14 +94,8 @@ class ConfigController:
         idles: List[CharConfigIdleModel] = []
         print("a")
         for idle in self._char_config.idles:
-            print("testing idle.name=", idle.name)
-            print("testing idle.after=", idle.after)
-            print("testing idle.never_after=", idle.never_after)
-            print("idle_time=", idle_time)
             if idle.after and idle_time>=idle.after:
-                print("a")
                 if idle.never_after and idle_time<idle.never_after:
-                    print("bingo")
                     idles.append(idle)
                     break
             if not idle.never_after and idle.after and idle_time>=idle.after:

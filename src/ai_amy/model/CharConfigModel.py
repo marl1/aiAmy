@@ -30,8 +30,8 @@ class CharConfigIdleModel(BaseModel):
     picture: Optional[str] = None
     after: Optional[int] = None
     never_after: Optional[int] = None
-    percent_chance: Optional[int] = None
-    percent_chance: Optional[float] = None
+    weight: Optional[int] = 1 # How likely it will be picked up first to check the chance.
+    per_thousand_chance: Optional[int] = 1000 # How likely the idle will play.
     text: Optional[List[str]] = None
     followed_by_one_of_these_idle: Optional[List[str]] = None
     summarize_and_reset_dialog: Optional[bool] = None
