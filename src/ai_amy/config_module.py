@@ -19,7 +19,7 @@ class ConfigController:
         self.config =  []
         config_path = os.path.join(AmyUtils.get_base_path(),"config.yml")
         try:
-            with open(config_path, "r") as yamlfile:
+            with open(config_path, "r", encoding="utf-8") as yamlfile:
                 self.config = yaml.load(yamlfile, Loader=yaml.FullLoader)
         except:
             logger.error(f"Couldn't read {config_path}. Make sure the file is at the root level and readable.")
@@ -27,7 +27,7 @@ class ConfigController:
 
         try:
             char_config_path = os.path.join(AmyUtils.get_base_path(),"chars",self.config['application']['current_character'],"charconfig.yml")
-            with open(char_config_path, "r") as yamlfile:
+            with open(char_config_path, "r", encoding="utf-8") as yamlfile:
                 character_config_dict = yaml.load(yamlfile, Loader=yaml.FullLoader)
         except:
             logger.error(f"Couldn't read charconfig.yml file. Make sure the file is under {char_config_path} and readable.")
@@ -59,14 +59,8 @@ class ConfigController:
     def get_config_output_window_y_offset(self):
         return self._char_config.output_window_y_offset
     
-    def get_config_personality(self):
-        return self._char_config.personality
-
-    def get_config_knowledge(self):
-        return self._char_config.knowledge
-
-    def get_config_appearance(self):
-        return self._char_config.appearance
+    def get_config_prompt(self):
+        return self._char_config.prompt
 
     def get_config_random_impulse(self):
         ponderated_impulses = []

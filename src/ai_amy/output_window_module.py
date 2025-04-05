@@ -27,3 +27,5 @@ class OutputWindow:
             y = main_window_y
             self.frame.geometry(f'+{x+58}+{y-self.frame.winfo_height()+config.get().get_config_output_window_y_offset()}')
 
+    def set_text(self, text):
+         self.text.set_content(text)

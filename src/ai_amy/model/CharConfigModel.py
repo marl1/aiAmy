@@ -39,9 +39,7 @@ class CharConfigIdleModel(BaseModel):
 class CharConfigModel(BaseModel):
     """Configuration model for a desktop pet character."""
     output_window_y_offset: Optional[int] = 0
-    personality: str
-    appearance: str
-    knowledge: str
+    prompt: str
     impulses: List[CharImpulseConfigModel]
     pictures: List[CharConfigPictureModel]
     idles: List[CharConfigIdleModel]

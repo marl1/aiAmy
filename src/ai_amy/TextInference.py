@@ -25,11 +25,8 @@ class TextInference:
         print("here received", text)
         Memory.saveMessage(Message(role="user", content=text))
         messages_to_send = Memory.getMessages()
-        system_content = config.get().get_config_personality() + " " +\
-                         config.get().get_config_appearance() + " " +\
-                         config.get().get_config_knowledge() + " " +\
-                         config.get().get_config_random_impulse() + " "
-        system_content = system_content + "At the end of your sentence write your current mood in brackets choosing only from [neutral], [curious], [happy], [sad], [angry], [surprised], [lovey]."
+        system_content = config.get().get_config_prompt() + config.get().get_config_random_impulse() + " "
+        system_content = system_content
         messages_to_send.insert(0, Message(role="system", content=system_content))
         messagesListJson = json.dumps([message.__dict__ for message in messages_to_send])
 

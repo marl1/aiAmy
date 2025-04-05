@@ -59,7 +59,7 @@ class AmyController:
     def handle_answer(self, amy_answer: str):
         """ Operations done upon Amy answering. """
         idle_module.reset()
-        self.main_window.text_output_window.text.set_content(re.sub(r"\[.*?\]", "", amy_answer))
+        self.main_window.text_output_window.set_text(re.sub(r"\[.*?\]", "", amy_answer))
         picture :CharConfigPictureModel = self.main_window.amy_animation.changePictureAccordingToMood(amy_answer)
         message_to_add_in_memory = amy_answer
         if picture and picture.add_to_memory:
