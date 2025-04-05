@@ -52,7 +52,7 @@ class ScrollableReadOnlyText:
     def on_content_modified(self, event=None):
         if(len(self.text.get('1.0', 'end'))>80):
             self.text.configure(height=5)
-        elif(len(self.text.get('1.0', 'end'))>40):
+        elif(len(self.text.get('1.0', 'end'))>30):
             self.text.configure(height=2)
         else:
             self.text.configure(height=1)
